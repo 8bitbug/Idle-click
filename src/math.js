@@ -7,15 +7,26 @@ let autoclickeramountdis = document.getElementById('amountAutoClicker');
 let saved = document.getElementById('saved');
 let saveclose = document.getElementById('saveclose');
 let autoclickercost = document.getElementById('autoclickercost');
+let settings = document.getElementById('settings');
+let upgrades = document.getElementById('upgrades');
+let settingscontent = document.getElementById('settingscontent');
+let closesettingscontent = document.getElementById('closesettingscontent');
+let clickupgradecost = document.getElementById('clickupgradecost');
+let clickupgrade = document.getElementById('clickupgrade');
 
 let click = parseInt(localStorage.getItem('click')) || 0;
 let clickRate = parseInt(localStorage.getItem('clickRate')) || 1;
 let autoclickerWorth = parseInt(localStorage.getItem('autoclickerWorth')) || 100;
 let autoClickerAmount = parseInt(localStorage.getItem('autoClickerAmount')) || 0;
 let autoclickerproduction = parseInt(localStorage.getItem('autoclickerproduction')) || 1;
+let clickinterval;
+
+autoclickeramountdis.innerHTML = autoClickerAmount;
 
 for (let i = 0; i < autoClickerAmount; i++) {
-    autoclickerp();
+    setTimeout(() => {
+        autoclickerp();
+    }, 100 * i)
 }
 
 saveclose.onclick = function() {
@@ -29,7 +40,17 @@ setInterval(() => {
     localStorage.setItem('autoclickerWorth', autoclickerWorth);
     localStorage.setItem('autoClickerAmount', autoClickerAmount);
     localStorage.setItem('autoclickerproduction', autoclickerproduction);
-}, 60000)
+}, 10000)
+
+settings.onclick = function() {
+    upgrades.style.display = 'none';
+    settingscontent.style.display = 'block';
+};
+
+closesettingscontent.onclick = function() {
+    settingscontent.style.display = 'none';
+    upgrades.style.display = 'block';
+}
 
 setInterval(() => {
     if (saved.style.display === 'flex') {
@@ -69,7 +90,9 @@ function autoclickerincrease() {
 
 function autoclickerp() {
     clickinterval = setInterval(() => {
-        click = click + autoclickerproduction;
+        setTimeout(() => {
+            click = click + autoclickerproduction;
+        }, 10 * 10)
         updateclickResult();
     }, 1000);
 };
@@ -96,3 +119,17 @@ setInterval(() => {
         autoclickercost.style.color = 'red';
     };
 }, 100)
+
+if (click > 250) {
+    clickupgradecost.style.color = 'green';
+} else {
+    clickupgradecost.style.color = 'red';
+};
+
+clickupgrade.onclick = function() {
+    if (click > 250) {
+        clickRate = clickRate * 2;
+        click - 250;
+        clickupgrade.style.display = 'none';
+    }
+}

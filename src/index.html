@@ -34,10 +34,17 @@
         <div id="prestige" class="absolute top-2 right-2 bg-white rounded-xl cursor-pointer border-8 border-black">Prestige</div>
         <div id="shapes" class="absolute bottom-2 right-2 bg-white rounded-xl cursor-pointer border-8 border-black">Shapes</div>
     </div>
-    <div class="bg-stone-900 w-2/5 absolute overflow-y-scroll bottom-0 right-1/4 m-auto h-5/6">
-        <div id="clickupgrade" class="bg-stone-500 h-20 w-full">
-            <img class="absolute top-2.5 left-2.5" src="https://us.123rf.com/450wm/asmati/asmati1706/asmati170606222/80941365-arrow-sign-illustration-vector-white-icon-with-soft-shadow-on-transparent-background.jpg" height="60px" width="60px"></div>
+    <div class="bg-stone-900 z-0 w-2/5 absolute overflow-y-scroll bottom-0 right-1/4 m-auto h-5/6">
+        <div id="upgrades">
+            <div id="clickupgrade" class="bg-stone-500 h-20 w-full cursor-pointer">
+                <img class="absolute top-2.5 left-2.5" src="https://us.123rf.com/450wm/asmati/asmati1706/asmati170606222/80941365-arrow-sign-illustration-vector-white-icon-with-soft-shadow-on-transparent-background.jpg" height="60px" width="60px">
+                <div id="clickupgradecost" class="absolute left-24 top-12">100 Clicks</div>
+            </div>
+            </div>
         </div>
+    </div>
+    <div id="settingscontent" class="bg-stone-900 hidden w-2/5 absolute overflow-y-scroll bottom-0 right-1/4 m-auto h-5/6">
+        <div id="closesettingscontent" class="text-white bg-stone-800 border-8 border-stone-800 border-opacity-5 cursor-pointer absolute right-0 top-0 rounded-bl-full text-2xl">X</div>
     </div>
     <script src="math.js"></script>
 </body>
