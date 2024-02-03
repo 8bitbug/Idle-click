@@ -1,3 +1,5 @@
+//Copyright 8bitbug 2024-2024
+
 let clickbutton = document.getElementById('clickbutton');
 let clickResult = document.getElementById('clickResult');
 let autoclickerbuy = document.getElementById('autoclicker');
@@ -6,25 +8,15 @@ let saved = document.getElementById('saved');
 let saveclose = document.getElementById('saveclose');
 let autoclickercost = document.getElementById('autoclickercost');
 
-let click = 0;
-let clickRate = 1;
-let autoclickerWorth = 100;
-let autoClickerAmount = 0;
-let autoclickerproduction = 1;
+let click = parseInt(localStorage.getItem('click')) || 0;
+let clickRate = parseInt(localStorage.getItem('clickRate')) || 1;
+let autoclickerWorth = parseInt(localStorage.getItem('autoclickerWorth')) || 100;
+let autoClickerAmount = parseInt(localStorage.getItem('autoClickerAmount')) || 0;
+let autoclickerproduction = parseInt(localStorage.getItem('autoclickerproduction')) || 1;
 
-const xhr = new XMLHttpRequest();
-
-xhr.open('GET', 'yourJsonFile.json', true);
-
-xhr.responseType = 'json';
-
-xhr.send();
-
-xhr.onload = function() {
-  const jsonData = JSON.parse(xhr.response);
-  const clickValue = jsonData.userdata[0].click;
+for (let i = 0; i < autoClickerAmount; i++) {
+    autoclickerp();
 }
-
 
 saveclose.onclick = function() {
     saved.style.display = 'none';
@@ -32,6 +24,11 @@ saveclose.onclick = function() {
 
 setInterval(() => {
     saved.style.display = 'flex';
+    localStorage.setItem('click', click);
+    localStorage.setItem('clickRate', clickRate);
+    localStorage.setItem('autoclickerWorth', autoclickerWorth);
+    localStorage.setItem('autoClickerAmount', autoClickerAmount);
+    localStorage.setItem('autoclickerproduction', autoclickerproduction);
 }, 60000)
 
 setInterval(() => {
@@ -43,7 +40,7 @@ setInterval(() => {
 }, 60000)
 
 function updateclickResult() {
-    clickResult.innerHTML = clickValue + ' ' + 'Clicks';
+    clickResult.innerHTML = click + ' ' + 'Clicks';
 };
 
 setInterval(() => {
@@ -71,11 +68,10 @@ function autoclickerincrease() {
 };
 
 function autoclickerp() {
-    setInterval(() => {
+    clickinterval = setInterval(() => {
         click = click + autoclickerproduction;
         updateclickResult();
     }, 1000);
-
 };
 
 autoclicker.onclick = function() {
