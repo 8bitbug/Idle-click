@@ -8,17 +8,19 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body>
+<div class="h-screen w-2/6 bg-slate-600 absolute overscroll-contain border-r-8 border-r-slate-600 left-0">
     <div id="clickResult" class="text-4xl absolute left-28 top-16 font-mono"></div>
     <div id="clickbutton" class="absolute bottom-56 left-32 cursor-pointer">
         <img src="https://cdn-icons-png.flaticon.com/512/1828/1828166.png" height="200px" width="200px">
     </div>
-    <div class="absolute top-0 right-0 h-screen w-96 overflow-y-scroll">
+</div>
+    <div class="absolute top-0 right-0 h-screen w-80 overflow-y-scroll">
         <div id="autoclicker" class="cursor-pointer">
-            <div class="bg-gray-300 w-96 h-14 z-10 absolute right-0 top-0 flex items-center">
+            <div class="bg-gray-300 w-80 h-14 z-10 absolute right-0 top-0 flex items-center">
                 <img class="m-0 z-50 absolute left-1" src="https://us.123rf.com/450wm/asmati/asmati1706/asmati170606222/80941365-arrow-sign-illustration-vector-white-icon-with-soft-shadow-on-transparent-background.jpg?ver=6" height="50px" width="50px">
                 <div class="absolute text-lg text-stone-800 m-1 left-16 top-px ">Autoclicker</div>
                 <div id="amountAutoClicker" class="absolute m-auto right-10 text-3xl text-gray-400">0</div>
-                <div id="autoclickercost" class="absolute left-20 bottom-px text-red-700"></div>
+                <div id="autoclickercost" class="absolute left-16 bottom-px text-red-700"></div>
             </div>
         </div>
     </div>
@@ -26,6 +28,7 @@
         <div id="savetext" class="text-white absolute top-1 left-0 right-0 m-auto">Saved!</div>
         <div id="saveclose" class="absolute top-1 right-2 text-white cursor-pointer">X</div>
     </div>
+    <div class="bg-black w-2/5 absolute bottom-0 right-1/4 m-auto h-5/6">w</div>
     <script src="math.js"></script>
 </body>
 </html>
