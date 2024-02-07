@@ -13,12 +13,15 @@ let settingscontent = document.getElementById('settingscontent');
 let closesettingscontent = document.getElementById('closesettingscontent');
 let clickupgradecost = document.getElementById('clickupgradecost');
 let clickupgrade = document.getElementById('clickupgrade');
+let deletesavebutton = document.getElementById('deletesave');
+let savebutton = document.getElementById('savebutton');
 
 let click = parseInt(localStorage.getItem('click')) || 0;
 let clickRate = parseInt(localStorage.getItem('clickRate')) || 1;
 let autoclickerWorth = parseInt(localStorage.getItem('autoclickerWorth')) || 100;
 let autoClickerAmount = parseInt(localStorage.getItem('autoClickerAmount')) || 0;
 let autoclickerproduction = parseInt(localStorage.getItem('autoclickerproduction')) || 1;
+let clickupgradeifb = parseInt(localStorage.getItem('clickupgradeifb')) || 0; 
 let clickinterval;
 
 autoclickeramountdis.innerHTML = autoClickerAmount;
@@ -33,6 +36,8 @@ saveclose.onclick = function() {
     saved.style.display = 'none';
 };
 
+localStorage.getItem('clickisbought')
+
 setInterval(() => {
     saved.style.display = 'flex';
     localStorage.setItem('click', click);
@@ -40,12 +45,8 @@ setInterval(() => {
     localStorage.setItem('autoclickerWorth', autoclickerWorth);
     localStorage.setItem('autoClickerAmount', autoClickerAmount);
     localStorage.setItem('autoclickerproduction', autoclickerproduction);
+    localStorage.setItem('clickupgradeifb', clickupgradeifb);
 }, 10000)
-
-settings.onclick = function() {
-    upgrades.style.display = 'none';
-    settingscontent.style.display = 'block';
-};
 
 closesettingscontent.onclick = function() {
     settingscontent.style.display = 'none';
@@ -92,7 +93,7 @@ function autoclickerp() {
     clickinterval = setInterval(() => {
         setTimeout(() => {
             click = click + autoclickerproduction;
-        }, 10 * 10)
+        }, 100)
         updateclickResult();
     }, 1000);
 };
@@ -120,16 +121,43 @@ setInterval(() => {
     };
 }, 100)
 
-if (click > 250) {
-    clickupgradecost.style.color = 'green';
-} else {
-    clickupgradecost.style.color = 'red';
-};
+setInterval(() => {
+    if (click > 250) {
+        clickupgradecost.style.color = 'green';
+    } else {
+        clickupgradecost.style.color = 'red';
+    };
+}, 1);
 
 clickupgrade.onclick = function() {
     if (click > 250) {
         clickRate = clickRate * 2;
-        click - 250;
-        clickupgrade.style.display = 'none';
+        click = click - 250;
+        clickupgradeifb = 1;
     }
+};
+
+setInterval(() => {
+    if (clickupgradeifb === 1) {
+        clickupgrade.style.display = 'none';
+    };
+}, 1);
+
+deletesavebutton.onclick = function() {
+    localStorage.clear();
+    location.reload();
+};
+
+savebutton.onclick = function() {
+    localStorage.setItem('click', click);
+    localStorage.setItem('clickRate', clickRate);
+    localStorage.setItem('autoclickerWorth', autoclickerWorth);
+    localStorage.setItem('autoClickerAmount', autoClickerAmount);
+    localStorage.setItem('autoclickerproduction', autoclickerproduction);
+    localStorage.setItem('clickupgradeifb', clickupgradeifb);
+};
+
+settings.onclick = function() {
+    upgrades.style.display = 'none';
+    settings.style.display = 'block';
 }
