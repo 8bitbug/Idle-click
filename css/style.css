@@ -1,0 +1,59 @@
+body {
+    background-color: black;
+}
+
+/*This is the cursor on the screen*/
+
+#mainclickbutton {
+    position: absolute;
+    left: 115px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    cursor: pointer;
+}
+
+#displayclick {
+    font-size: 45px;
+    position: absolute;
+    left: 115px;
+    top: 70px;
+    margin: 10px;
+    font-family: cursive;
+}
+
+#clicksection {
+    width: 456px;
+    position: absolute;
+    left: 0px;
+    margin-right: 5px;
+    overflow-x: auto;
+    background-color: white;
+}
+
+#extrasection {
+    width: 540px;
+    background-color: white;
+    position: absolute;
+    right: 360px;
+}
+
+#shopsection {
+    background-color: white;
+    width: 350px;
+    position: absolute;
+    right: 0;
+    margin-left: 5px;
+}
+
+#autoclicker {
+    width: 100%;
+    height: 55px;
+    border-bottom: 5px solid black;
+}
+
+#autoclickercost {
+
+}
