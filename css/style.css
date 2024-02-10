@@ -89,3 +89,79 @@ body {
     position: absolute;
     top: 0;
 }
+
+#settings {
+    position: absolute;
+    font-size: 18px;
+    top: 5px;
+    left: 15px;
+    border: 5px solid black;
+    border-radius: 50px;
+    padding: 5px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+#stats {
+    font-size: 18px;
+    border: 5px solid black;
+    padding: 5px;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+    bottom: 5px;
+    left: 15px;
+}
+
+#info {
+    font-size: 18px;
+    border: 5px solid black;
+    padding: 5px;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px; 
+    right: 15px;
+}
+
+#prestige {
+    font-size: 18px;
+    border: 5px solid black;
+    padding: 5px;
+    font-weight: 900;
+    border-radius: 50px;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    bottom: 5px;
+}
+
+#clickupgrade {
+    height: 50px;
+    width: 30%;
+    border-bottom: 5px solid black;
+    border-right: 5px solid black;
+    display: flex;
+    padding: 1px;
+    cursor: pointer;
+    align-items: center;
+    position: absolute;
+    top: 120px;
+}
+
+#clickupgradeicon {
+    font-size: 30px;
+    font-weight: 900;
+    position: absolute;
+    left: 10px;
+}
+
+#clickupgradecost {
+    font-size: 15px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 5px;
+    left: 55px;
+}
