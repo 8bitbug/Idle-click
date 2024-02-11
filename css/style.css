@@ -19,7 +19,7 @@ body {
 #displayclick {
   font-size: 40px;
   position: absolute;
-  left: 40px;
+  left: 110px;
   top: 70px;
   margin: auto;
   font-family: cursive;
@@ -203,4 +203,47 @@ body {
   font-weight: 900;
   cursor: pointer;
   font-size: 20px;
+}
+
+#deletesaveButton {
+  position: absolute;
+  left: 120px;
+  top: 100px;
+  border: 5px solid black;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+#clickbait {
+  height: 70px;
+  width: 100%;
+  border-bottom: 5px solid black;
+  border-right: 5px solid black;
+  cursor: pointer;
+}
+
+#clickbaiticon {
+  position: absolute;
+  top: 70px;
+  left: 10px;
+}
+
+#clickbaitcost {
+  position: absolute;
+  top: 110px;
+  left: 90px;
+}
+
+#clickbaittitle {
+  position: absolute;
+  top: 70px;
+  left: 90px;
+}
+
+#clickbaitamount {
+  position: absolute;
+  top: 81px;
+  right: 30px;
+  font-size: 30px;
 }

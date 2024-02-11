@@ -6,6 +6,7 @@ let infoButton = document.getElementById("info");
 let prestigeButton = document.getElementById("prestige");
 
 let saveButton = document.getElementById("saveButton");
+let deleteButton = document.getElementById("deletesaveButton");
 
 mainclickbutton.addEventListener("mouseover", function () {
   mainclickbutton.style.transform = "scale(1.1)";
@@ -31,4 +32,9 @@ settingsButton.addEventListener("click", function () {
 
 saveButton.addEventListener("click", function () {
   save();
+});
+
+deleteButton.addEventListener("click", function () {
+  localStorage.clear();
+  location.reload();
 });
