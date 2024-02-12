@@ -23,13 +23,13 @@ let clickbaitproduction =
 let clickbaitinterval;
 
 let clickupgrade = document.getElementById("clickupgrade");
-let clickupgradeifbought = (Boolean =
-  localStorage.getItem("clickupgradeifbought") || false);
+let clickupgradeifbought =
+  parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
 let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
 
-let audio = new Audio("click-6.mp3");
+let audio = new Audio("/Sounds/click-6.mp3");
 let isPlaying = false;
 
 function formatNumber(number) {
@@ -53,10 +53,16 @@ for (i = 0; i < autoclickerAmount; i++) {
   }, 100 * i);
 }
 
+for (i = 0; i < clickbaitAmount; i++) {
+  setTimeout(() => {
+    clickbaitproducing();
+  }, 200 * i);
+}
+
 function displayclicks() {
   displayclick.innerHTML = formatNumber(click) + " " + "clicks";
   if (click >= 1000) {
-    displayclick.innerHTML = formatNumber(click) + "<br>" + "     " + "clicks";
+    displayclick.innerHTML = formatNumber(click) + "<br>" + " " + "clicks";
   }
 }
 
@@ -65,8 +71,7 @@ displayclicks();
 mainclickbutton.addEventListener("click", function () {
   click = click + clickRate;
   displayclicks();
-
-  audio = new Audio("click-6.mp3");
+  audio = new Audio("/Sounds/click-6.mp3");
   audio.play();
   isPlaying = true;
 });
@@ -126,10 +131,8 @@ setInterval(() => {
 }, 1);
 
 function checkAndDisplayClickUpgrade() {
-  if (clickupgradeifbought === true) {
+  if (clickupgradeifbought === 1) {
     clickupgrade.remove();
-  } else {
-    clickupgrade.style.display = "flex";
   }
 }
 
@@ -139,7 +142,7 @@ function clickupgradebuy() {
   if (click >= 250) {
     click = click - 250;
     clickRate = clickRate * 2;
-    clickupgradeifbought = true;
+    clickupgradeifbought = 1;
     localStorage.setItem("clickupgradeifbought", clickupgradeifbought);
     clickupgrade.remove();
     displayclicks();
@@ -174,7 +177,7 @@ function clickbaitbuy() {
     save();
     setTimeout(() => {
       clickbaitproducing();
-    }, 100 * i);
+    }, 200 * i);
     displayclickbait();
   }
 }
