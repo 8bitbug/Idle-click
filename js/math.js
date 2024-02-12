@@ -14,19 +14,23 @@ let autoclickerAmountdis = document.getElementById("autoclickeramount");
 let autoclickerWorthdis = document.getElementById("autoclickercost");
 
 let clickbaitbutton = document.getElementById("clickbait");
-let clickbaitAmount = 0;
-let clickbaitWorth = 1000;
+let clickbaitAmount = parseInt(localStorage.getItem("clickbaitAmount")) || 0;
+let clickbaitWorth = parseInt(localStorage.getItem("clickbaitWorth")) || 1000;
 let clickbaitAmountdis = document.getElementById("clickbaitamount");
 let clickbaitWorthdis = document.getElementById("clickbaitcost");
-let clickbaitproduction = 1;
+let clickbaitproduction =
+  parseInt(localStorage.getItem("clickbaitproduction")) || 1;
 let clickbaitinterval;
 
 let clickupgrade = document.getElementById("clickupgrade");
-let clickupgradeifbought =
-  Boolean(localStorage.getItem("clickupgradeifbought")) || false;
+let clickupgradeifbought = (Boolean =
+  localStorage.getItem("clickupgradeifbought") || false);
 
 let click = parseInt(localStorage.getItem("click")) || 0;
 let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
+
+let audio = new Audio("click-6.mp3");
+let isPlaying = false;
 
 function formatNumber(number) {
   //Will proably become the biggest function
@@ -50,7 +54,10 @@ for (i = 0; i < autoclickerAmount; i++) {
 }
 
 function displayclicks() {
-  displayclick.innerHTML = formatNumber(click) + "<br>" + "clicks";
+  displayclick.innerHTML = formatNumber(click) + " " + "clicks";
+  if (click >= 1000) {
+    displayclick.innerHTML = formatNumber(click) + "<br>" + "     " + "clicks";
+  }
 }
 
 displayclicks();
@@ -58,6 +65,10 @@ displayclicks();
 mainclickbutton.addEventListener("click", function () {
   click = click + clickRate;
   displayclicks();
+
+  audio = new Audio("click-6.mp3");
+  audio.play();
+  isPlaying = true;
 });
 
 function save() {
@@ -67,6 +78,9 @@ function save() {
   localStorage.setItem("autoclickerAmount", autoclickerAmount);
   localStorage.setItem("autoclickerproduction", autoclickerproduction);
   localStorage.setItem("clickupgradeifbought", clickupgradeifbought);
+  localStorage.setItem("clickbaitAmount", clickbaitAmount);
+  localStorage.setItem("clickbaitWorth", clickbaitWorth);
+  localStorage.setItem("clickbaitproduction", clickbaitproduction);
 }
 
 setInterval(() => {
@@ -157,6 +171,7 @@ function clickbaitbuy() {
     clickbaitAmount = clickbaitAmount + 1;
     clickbaitWorth = clickbaitWorth * (1 + 0.16);
     clickbaitWorth = Math.floor(clickbaitWorth);
+    save();
     setTimeout(() => {
       clickbaitproducing();
     }, 100 * i);
