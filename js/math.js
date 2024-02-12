@@ -111,8 +111,8 @@ function autoclickerbuy() {
   if (click >= autoclickerWorth) {
     click = click - autoclickerWorth;
     autoclickerAmount = autoclickerAmount + 1;
-    autoclickerWorth = autoclickerWorth * (1 + 0.16);
-    autoclickerWorth = Math.floor(autoclickerWorth);
+    autoclickerWorth = autoclickerWorth * (1 + 0.15);
+    autoclickerWorth = Math.round(autoclickerWorth);
     setTimeout(() => {
       autoclickerproducing();
     }, 100 * i);
@@ -172,8 +172,8 @@ function clickbaitbuy() {
   if (click >= clickbaitWorth) {
     click = click - clickbaitWorth;
     clickbaitAmount = clickbaitAmount + 1;
-    clickbaitWorth = clickbaitWorth * (1 + 0.16);
-    clickbaitWorth = Math.floor(clickbaitWorth);
+    clickbaitWorth = clickbaitWorth * (1 + 0.15);
+    clickbaitWorth = Math.round(clickbaitWorth);
     save();
     setTimeout(() => {
       clickbaitproducing();
