@@ -23,6 +23,7 @@ function opensettings() {
   } else {
     document.getElementById("upgrades").style.display = "none";
     document.getElementById("settingscontent").style.display = "flex";
+    document.getElementById("statscontent").style.display = "none";
   }
 }
 
@@ -37,4 +38,18 @@ saveButton.addEventListener("click", function () {
 deleteButton.addEventListener("click", function () {
   localStorage.clear();
   location.reload();
+});
+
+function openstats() {
+  if (document.getElementById("statscontent").style.display == "flex") {
+    document.getElementById("statscontent").style.display = "none";
+    document.getElementById("upgrades").style.display = "flex";
+  } else {
+    document.getElementById("upgrades").style.display = "none";
+    document.getElementById("statscontent").style.display = "flex";
+    document.getElementById("settingscontent").style.display = "none";
+  }
+}
+statsButton.addEventListener("click", () => {
+  openstats();
 });
