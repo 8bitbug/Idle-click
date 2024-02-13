@@ -1,12 +1,9 @@
 let mainclickbutton = document.getElementById("mainclickbutton");
 let displayclick = document.getElementById("displayclick");
 
-let autoclickerWorth =
-  parseInt(localStorage.getItem("autoclickerWorth")) || 100;
-let autoclickerAmount =
-  parseInt(localStorage.getItem("autoclickerAmount")) || 0;
-let autoclickerproduction =
-  parseInt(localStorage.getItem("autoclickerproduction")) || 1;
+let autoclickerWorth = parseInt(localStorage.getItem("autoclickerWorth")) || 100;
+let autoclickerAmount = parseInt(localStorage.getItem("autoclickerAmount")) || 0;
+let autoclickerproduction = parseInt(localStorage.getItem("autoclickerproduction")) || 1;
 let autoclickerinterval;
 
 let autoclickeritem = document.getElementById("autoclicker");
@@ -18,13 +15,11 @@ let clickbaitAmount = parseInt(localStorage.getItem("clickbaitAmount")) || 0;
 let clickbaitWorth = parseInt(localStorage.getItem("clickbaitWorth")) || 1000;
 let clickbaitAmountdis = document.getElementById("clickbaitamount");
 let clickbaitWorthdis = document.getElementById("clickbaitcost");
-let clickbaitproduction =
-  parseInt(localStorage.getItem("clickbaitproduction")) || 1;
+let clickbaitproduction = parseInt(localStorage.getItem("clickbaitproduction")) || 1;
 let clickbaitinterval;
 
 let clickupgrade = document.getElementById("clickupgrade");
-let clickupgradeifbought =
-  parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
+let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
 let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
@@ -61,37 +56,13 @@ function formatclick(number) {
   if (number < 1e3) {
     return number;
   } else if (number >= 1e3 && number < 1e6) {
-    return (
-      "<div id='clicksamount'>" +
-      (number / 1e3).toFixed(1) +
-      "</div>" +
-      "<br>" +
-      " Thousand" +
-      " "
-    );
+    return ("<div id='clicksamount'>" + (number / 1e3).toFixed(1) + "</div>" + "<br>" + " Thousand" + " ");
   } else if (number >= 1e6 && number < 1e12) {
-    return (
-      "<div id='clicksamount'>" +
-      (number / 1e6).toFixed(1) +
-      "</div>" +
-      "<br>" +
-      " Million"
-    );
+    return ("<div id='clicksamount'>" + (number / 1e6).toFixed(1) + "</div>" + "<br>" + " Million");
   } else if (number >= 1e9 && number < 1e12) {
-    return (
-      "<div id='clicksamount'>" +
-      (number / 1e9).toFixed(1) +
-      "</div>" +
-      "<br>" +
-      " Billoin"
-    );
+    return ("<div id='clicksamount'>" + (number / 1e9).toFixed(1) + "</div>" + "<br>" + " Billoin");
   } else if (number >= 1e12) {
-    return (
-      "<div id='clicksamount'>" +
-      (number / 1e12).toFixed(1) +
-      "</div>" +
-      "<br>" +
-      " Trillion"
+    return ("<div id='clicksamount'>" + (number / 1e12).toFixed(1) + "</div>" + "<br>" + " Trillion"
     );
   }
 }
@@ -110,8 +81,7 @@ for (i = 0; i < clickbaitAmount; i++) {
 
 function displayclicks() {
   displayclick.innerHTML = click + " " + "clicks";
-  clicksperseconddis.innerHTML =
-    "Per" + " " + "Second" + ":" + " " + formatNumber(clickspersecond);
+  clicksperseconddis.innerHTML = "Per" + " " + "Second" + ":" + " " + formatNumber(clickspersecond);
   if (click >= 1000) {
     displayclick.innerHTML = formatclick(click) + "clicks";
     displayclick.style.top = "55px";
@@ -120,19 +90,9 @@ function displayclicks() {
     displayclick.style.top = "100px";
     displayclick.style.left = "140px";
   }
-  clickscurrently.innerHTML =
-    "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
-  clickseverearnt.innerHTML =
-    "Total" + " " + "Clicks" + ":" + " " + formatNumber(clicktotalearnt);
-  clicksperclickdis.innerHTML =
-    "Clicks" +
-    " " +
-    "per" +
-    " " +
-    "Click" +
-    ":" +
-    " " +
-    formatNumber(clickRate);
+  clickscurrently.innerHTML = "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
+  clickseverearnt.innerHTML = "Total" + " " + "Clicks" + ":" + " " + formatNumber(clicktotalearnt);
+  clicksperclickdis.innerHTML = "Clicks" + " " + "per" + " " + "Click" + ":" + " " + formatNumber(clickRate);
 }
 
 displayclicks();
