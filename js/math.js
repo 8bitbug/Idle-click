@@ -9,6 +9,7 @@ let autoclickerinterval;
 let autoclickeritem = document.getElementById("autoclicker");
 let autoclickerAmountdis = document.getElementById("autoclickeramount");
 let autoclickerWorthdis = document.getElementById("autoclickercost");
+let autoclickerpersecondinc = parseInt(localStorage.getItem("autoclickerpersecondinc")) || 1;
 
 let clickbaitbutton = document.getElementById("clickbait");
 let clickbaitAmount = parseInt(localStorage.getItem("clickbaitAmount")) || 0;
@@ -36,13 +37,21 @@ let clicksperseconddis = document.getElementById("clickspersecond");
 
 let clickspersecond = parseInt(localStorage.getItem("clickspersecond")) || 0;
 
+let autoclickerupgrade = document.getElementById('autoclickerupgrade');
+let autoclickerupgradecostdis = document.getElementById("autoclickerupgradecost");
+
+let autoclickerupgradeifbought = parseInt(localStorage.getItem("autoclickerupgradeifbought")) || 0;
+
+let clicksamount = document.getElementById('clicksamount');
+let clickletters = document.getElementById('clickletters');
+
 function formatNumber(number) {
   //Will proably become the biggest function
   if (number < 1e3) {
     return number;
   } else if (number >= 1e3 && number < 1e6) {
     return (number / 1e3).toFixed(1) + " Thousand";
-  } else if (number >= 1e6 && number < 1e12) {
+  } else if (number >= 1e6 && number < 1e9) {
     return (number / 1e6).toFixed(1) + " Million";
   } else if (number >= 1e9 && number < 1e12) {
     return (number / 1e9).toFixed(1) + " Billoin";
@@ -52,18 +61,10 @@ function formatNumber(number) {
 }
 
 function formatclick(number) {
-  //Will proably become the biggest function
   if (number < 1e3) {
     return number;
   } else if (number >= 1e3 && number < 1e6) {
-    return ("<div id='clicksamount'>" + (number / 1e3).toFixed(1) + "</div>" + "<br>" + " Thousand" + " ");
-  } else if (number >= 1e6 && number < 1e12) {
-    return ("<div id='clicksamount'>" + (number / 1e6).toFixed(1) + "</div>" + "<br>" + " Million");
-  } else if (number >= 1e9 && number < 1e12) {
-    return ("<div id='clicksamount'>" + (number / 1e9).toFixed(1) + "</div>" + "<br>" + " Billoin");
-  } else if (number >= 1e12) {
-    return ("<div id='clicksamount'>" + (number / 1e12).toFixed(1) + "</div>" + "<br>" + " Trillion"
-    );
+    return (number / 1e3).toFixed(1);
   }
 }
 
@@ -80,15 +81,18 @@ for (i = 0; i < clickbaitAmount; i++) {
 }
 
 function displayclicks() {
-  displayclick.innerHTML = click + " " + "clicks";
   clicksperseconddis.innerHTML = "Per" + " " + "Second" + ":" + " " + formatNumber(clickspersecond);
-  if (click >= 1000) {
-    displayclick.innerHTML = formatclick(click) + "clicks";
+  if (click >= 1e3 && click < 1e6) {
     displayclick.style.top = "55px";
     displayclick.style.left = "85px";
-  } else if (click < 1000) {
+    clicksamount.innerHTML = formatclick(click)
+    clickletters.innerHTML = " Thousand" + " clicks";
+    clickletters.style.top = "45px";
+  } else if (click < 1e3) {
     displayclick.style.top = "100px";
     displayclick.style.left = "140px";
+    clickletters.style.top = "1px";
+    clickletters.innerHTML = click + " clicks";
   }
   clickscurrently.innerHTML = "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
   clickseverearnt.innerHTML = "Total" + " " + "Clicks" + ":" + " " + formatNumber(clicktotalearnt);
@@ -118,6 +122,8 @@ function save() {
   localStorage.setItem("clickbaitproduction", clickbaitproduction);
   localStorage.setItem("clicktotalearnt", clicktotalearnt);
   localStorage.setItem("clickspersecond", clickspersecond);
+  localStorage.setItem("autoclickerupgradeifbought", autoclickerupgradeifbought);
+  localStorage.setItem("autoclickerpersecondinc", autoclickerpersecondinc);
 }
 
 setInterval(() => {
@@ -146,7 +152,7 @@ function autoclickerbuy() {
     autoclickerAmount = autoclickerAmount + 1;
     autoclickerWorth = autoclickerWorth * (1 + 0.15);
     autoclickerWorth = Math.round(autoclickerWorth);
-    clickspersecond = clickspersecond + 1;
+    clickspersecond = clickspersecond + autoclickerpersecondinc;
     setTimeout(() => {
       autoclickerproducing();
     }, 100 * i);
@@ -179,8 +185,10 @@ function clickupgradebuy() {
     clickupgradeifbought = 1;
     localStorage.setItem("clickupgradeifbought", clickupgradeifbought);
     clickupgrade.remove();
+    autoclickerupgrademove();
     displayclicks();
     checkAndDisplayClickUpgrade();
+    autoclickerupgrademove();
   }
 }
 
@@ -221,3 +229,44 @@ function clickbaitbuy() {
 clickbaitbutton.addEventListener("click", function () {
   clickbaitbuy();
 });
+
+setInterval(() => {
+  document.title = formatNumber(click);
+}, 1);
+
+setInterval(() => {
+  document.title = formatNumber(click);
+}, 1);
+
+function autoclickerupgrademove() {
+  autoclickerupgrade.style.left = '6px';
+};
+
+function isautoclickerupgradebought() {
+  if (autoclickerupgradeifbought == 1) {
+    autoclickerupgrade.remove();
+  };
+};
+
+isautoclickerupgradebought();
+
+function autoclickerupgradebuy() {
+  if (click >= 2500) {
+    autoclickerupgrade.remove();
+    autoclickerproduction = autoclickerproduction + 1;
+    click = click - 2500;
+    autoclickerupgradeifbought = autoclickerupgradeifbought + 1;
+    clickspersecond = clickspersecond + autoclickerAmount;
+    autoclickerpersecond = autoclickerpersecond * 2;
+  };
+};
+
+if (clickupgradeifbought == 1) {
+  autoclickerupgrademove();
+};
+
+autoclickerupgrade.addEventListener("click", () => {
+  autoclickerupgradebuy();
+});
+
+autoclickerupgradecostdis.innerHTML = formatNumber(2500);

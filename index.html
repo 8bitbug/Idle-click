@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idle Click</title>
+    <title></title>
     <link href="./output.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body>
     <div id="clicksection" class="h-screen">
-        <div id="displayclick"></div>
+        <div id="displayclick">
+            <div id="clicksamount"></div><br>
+            <div id="clickletters"></div>
+        </div>
         <div id="clickspersecond"></div>
         <img id="mainclickbutton" src="https://cdn-icons-png.flaticon.com/512/1828/1828166.png" height="200px" width="200px">
     </div>
@@ -26,6 +29,11 @@
                 <div id="clickupgradeicon">2x</div>
                 <div id="clickupgradename">Click Upgrade</div>
                 <div id="clickupgradecost">250 clicks</div>
+            </div>
+            <div id="autoclickerupgrade">
+                <img id="autoclickerupgradeicon" src="https://static.thenounproject.com/png/4387058-200.png" height="50px" width="50px">
+                <div id="autoclickerupgradecost"></div>
+                <div id="autoclickerupgradetitle">Autoclicker Glove</div>
             </div>
         </div>
         <div id="settingscontent">
@@ -68,6 +76,7 @@
             <div id="clickbaitcost"></div>
         </div>
     </div>
+    <script src="worker.js"></script>
     <script src="/js/etc.js"></script>
     <script src="/js/math.js"></script>
 </body>

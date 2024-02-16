@@ -302,3 +302,40 @@ body {
   top: 10px;
   left: 100px;
 }
+
+#autoclickerupgrade {
+  height: 60px;
+  width: 35%;
+  border: 5px solid black;
+  display: flex;
+  padding: 1px;
+  cursor: pointer;
+  align-items: center;
+  position: absolute;
+  left: 174px;
+  top: 130px;
+  user-select: none;
+}
+
+#autoclickerupgradecost {
+  font-size: 15px;
+  position: absolute;
+  bottom: 1px;
+  left: 65px;
+}
+
+#autoclickerupgradetitle {
+    font-size: 15px;
+    font-weight: 500;
+    position: absolute;
+    top: 3px;
+    left: 55px;
+}
+
+#clickletters {
+  position: absolute;
+}
+
+#clicknumbers {
+  position: absolute;
+}
