@@ -109,6 +109,20 @@ mainclickbutton.addEventListener("click", function () {
   audio = new Audio("/Sounds/click-6.mp3");
   audio.play();
   isPlaying = true;
+  let clickpopup = document.createElement('div');
+  clickpopup.setAttribute("id", "clickpopup");
+  clickpopup.innerHTML = formatNumber(clickRate) + "+";
+  clickpopup.style.position = "absolute";
+  clickpopup.style.left = (event.clientX - 5) + "px";
+  clickpopup.style.top = (event.clientY - 30) + "px";
+  clickpopup.style.opacity = 1;
+  document.body.appendChild(clickpopup);
+  setTimeout(function() {
+    clickpopup.style.opacity = 0;
+    setTimeout(function() {
+      document.body.removeChild(clickpopup);
+    }, 1000);
+  }, 1000);
 });
 
 function save() {

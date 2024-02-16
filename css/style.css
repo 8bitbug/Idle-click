@@ -339,3 +339,24 @@ body {
 #clicknumbers {
   position: absolute;
 }
+
+#clickpopup {
+  position: absolute;
+  user-select: none;
+  font-size: 20px;
+  z-index: 1;
+  animation-name: move-up;
+      animation-duration: 2s;
+      animation-fill-mode: forwards;
+}
+
+@keyframes move-up {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}

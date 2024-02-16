@@ -12,7 +12,11 @@ mainclickbutton.addEventListener("mouseover", function () {
   mainclickbutton.style.transform = "scale(1.1)";
 });
 
-mainclickbutton.addEventListener("mouseout", function () {
+mainclickbutton.addEventListener("click", () => {
+  mainclickbutton.style.transform = "scale(1.1)";
+});
+
+mainclickbutton.addEventListener("mouseleave", function () {
   mainclickbutton.style.transform = "scale(1)";
 });
 
