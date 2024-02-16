@@ -93,6 +93,7 @@ function displayclicks() {
     displayclick.style.left = "140px";
     clickletters.style.top = "1px";
     clickletters.innerHTML = click + " clicks";
+    clicksamount.innerHTML = " ";
   }
   clickscurrently.innerHTML = "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
   clickseverearnt.innerHTML = "Total" + " " + "Clicks" + ":" + " " + formatNumber(clicktotalearnt);
