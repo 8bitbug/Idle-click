@@ -5,6 +5,11 @@ let statsButton = document.getElementById("stats");
 let infoButton = document.getElementById("info");
 let prestigeButton = document.getElementById("prestige");
 
+let informationcontent = document.getElementById("informationcontent");
+let upgradescontent = document.getElementById("upgrades");
+let statscontent = document.getElementById("statscontent");
+let settingscontent = document.getElementById("settingscontent");
+
 let saveButton = document.getElementById("saveButton");
 let deleteButton = document.getElementById("deletesaveButton");
 
@@ -21,13 +26,13 @@ mainclickbutton.addEventListener("mouseleave", function () {
 });
 
 function opensettings() {
-  if (document.getElementById("settingscontent").style.display == "flex") {
-    document.getElementById("settingscontent").style.display = "none";
-    document.getElementById("upgrades").style.display = "flex";
+  if (settingscontent.style.display == "flex") {
+    settingscontent.style.display = "none";
+    upgradescontent.style.display = "flex";
   } else {
-    document.getElementById("upgrades").style.display = "none";
-    document.getElementById("settingscontent").style.display = "flex";
-    document.getElementById("statscontent").style.display = "none";
+    upgradescontent.style.display = "none";
+    settingscontent.style.display = "flex";
+    statscontent.style.display = "none";
   }
 }
 
@@ -45,15 +50,34 @@ deleteButton.addEventListener("click", function () {
 });
 
 function openstats() {
-  if (document.getElementById("statscontent").style.display == "flex") {
-    document.getElementById("statscontent").style.display = "none";
-    document.getElementById("upgrades").style.display = "flex";
+  if (statscontent.style.display == "flex") {
+    statscontent.style.display = "none";
+    upgradescontent.style.display = "flex";
   } else {
-    document.getElementById("upgrades").style.display = "none";
-    document.getElementById("statscontent").style.display = "flex";
-    document.getElementById("settingscontent").style.display = "none";
+    upgradescontent.style.display = "none";
+    statscontent.style.display = "flex";
+    settingscontent.style.display = "none";
   }
 }
+
 statsButton.addEventListener("click", () => {
   openstats();
+});
+
+function openinformation() {
+  if (informationcontent.style.display == "flex") {
+    statscontent.style.display = "none";
+    upgradescontent.style.display = "flex";
+    settingscontent.style.display = "none";
+    informationcontent.style.display = "none";
+  } else {
+    upgradescontent.style.display = "none";
+    statscontent.style.display = "none";
+    settingscontent.style.display = "none";
+    informationcontent.style.display = "flex";
+  }
+};
+
+infoButton.addEventListener("click", () => {
+  openinformation();
 });

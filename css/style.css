@@ -360,3 +360,15 @@ body {
     opacity: 0;
   }
 }
+
+#informationcontent {
+  display: none;
+  position: absolute;
+  top: 130px;
+  left: 10px;
+}
+
+#aboutgame {
+  border: 5px solid black;
+  user-select: none;
+}

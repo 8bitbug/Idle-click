@@ -45,6 +45,15 @@ let autoclickerupgradeifbought = parseInt(localStorage.getItem("autoclickerupgra
 let clicksamount = document.getElementById('clicksamount');
 let clickletters = document.getElementById('clickletters');
 
+let autoclickerinttime = 0;
+const autoclickerdelayintitme = 1000 - autoclickerinttime;
+let autoclickerints = setInterval(() => {
+  autoclickerinttime = autoclickerinttime + 1;
+  if (autoclickerinttime >= 1000) {
+    autoclickerinttime = 0;
+  }
+}, 1);
+
 function formatNumber(number) {
   //Will proably become the biggest function
   if (number < 1e3) {
@@ -71,13 +80,13 @@ function formatclick(number) {
 for (i = 0; i < autoclickerAmount; i++) {
   setTimeout(() => {
     autoclickerproducing();
-  }, 100 * i);
+  }, 400 * i);
 }
 
 for (i = 0; i < clickbaitAmount; i++) {
   setTimeout(() => {
     clickbaitproducing();
-  }, 200 * i);
+  }, 400 * i);
 }
 
 function displayclicks() {
@@ -155,7 +164,7 @@ displayautoclicker();
 
 function autoclickerproducing() {
   autoclickerinterval = setInterval(() => {
-    click += autoclickerproduction;
+      click = click + autoclickerproduction;
     clicktotalearnt = clicktotalearnt + autoclickerproduction;
     displayclicks();
   }, 1000);
@@ -164,17 +173,25 @@ function autoclickerproducing() {
 function autoclickerbuy() {
   if (click >= autoclickerWorth) {
     click = click - autoclickerWorth;
-    autoclickerAmount = autoclickerAmount + 1;
     autoclickerWorth = autoclickerWorth * (1 + 0.15);
     autoclickerWorth = Math.round(autoclickerWorth);
     clickspersecond = clickspersecond + autoclickerpersecondinc;
-    setTimeout(() => {
+    autoclickerAmount = autoclickerAmount + 1;
+    //It was like hell while making this smooth
+    clearInterval(autoclickerints);
+    autoclickerinttime = 0;
+      autoclickerints;
+    if (autoclickerAmount >= 2) {
+      setTimeout(() => {
+        autoclickerproducing();
+      }, autoclickerdelayintitme)
+    } else if (autoclickerAmount === 1) {
       autoclickerproducing();
-    }, 100 * i);
+    }
     displayautoclicker();
-    displayclick();
+    displayclicks();
   }
-}
+};
 
 autoclickeritem.addEventListener("click", function () {
   autoclickerbuy();
@@ -236,7 +253,7 @@ function clickbaitbuy() {
     save();
     setTimeout(() => {
       clickbaitproducing();
-    }, 200 * i);
+    }, 1000);
     displayclickbait();
   }
 }
