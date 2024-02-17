@@ -325,11 +325,11 @@ body {
 }
 
 #autoclickerupgradetitle {
-    font-size: 15px;
-    font-weight: 500;
-    position: absolute;
-    top: 3px;
-    left: 55px;
+  font-size: 15px;
+  font-weight: 500;
+  position: absolute;
+  top: 3px;
+  left: 55px;
 }
 
 #clickletters {
@@ -346,8 +346,8 @@ body {
   font-size: 20px;
   z-index: 1;
   animation-name: move-up;
-      animation-duration: 2s;
-      animation-fill-mode: forwards;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes move-up {
@@ -371,4 +371,39 @@ body {
 #aboutgame {
   border: 5px solid black;
   user-select: none;
+}
+
+#clickfarm {
+  height: 70px;
+  width: 100%;
+  border-bottom: 5px solid black;
+  border-right: 5px solid black;
+  cursor: pointer;
+  user-select: none;
+}
+
+#clickfarmicon {
+  position: absolute;
+  top: 145px;
+  left: 20px;
+  z-index: 1;
+}
+
+#clickfarmcost {
+  position: absolute;
+  top: 180px;
+  left: 90px;
+}
+
+#clickfarmtitle {
+  position: absolute;
+  top: 140px;
+  left: 90px;
+}
+
+#clickfarmamount {
+  position: absolute;
+  top: 151px;
+  right: 30px;
+  font-size: 30px;
 }
