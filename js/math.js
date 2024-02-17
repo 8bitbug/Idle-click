@@ -272,7 +272,7 @@ function autoclickerupgradebuy() {
     click = click - 2500;
     autoclickerupgradeifbought = autoclickerupgradeifbought + 1;
     clickspersecond = clickspersecond + autoclickerAmount;
-    autoclickerpersecond = autoclickerpersecond * 2;
+    autoclickerpersecondinc = autoclickerpersecondinc * 2;
   };
 };
 
