@@ -33,6 +33,7 @@ function opensettings() {
     upgradescontent.style.display = "none";
     settingscontent.style.display = "flex";
     statscontent.style.display = "none";
+    informationcontent.style.display = "none";
   }
 }
 
@@ -57,6 +58,7 @@ function openstats() {
     upgradescontent.style.display = "none";
     statscontent.style.display = "flex";
     settingscontent.style.display = "none";
+    informationcontent.style.display = "none";
   }
 }
 

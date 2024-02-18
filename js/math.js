@@ -1,32 +1,27 @@
 let mainclickbutton = document.getElementById("mainclickbutton");
 let displayclick = document.getElementById("displayclick");
 
-let autoclickerWorth =
-  parseInt(localStorage.getItem("autoclickerWorth")) || 100;
-let autoclickerAmount =
-  parseInt(localStorage.getItem("autoclickerAmount")) || 0;
-let autoclickerproduction =
-  parseInt(localStorage.getItem("autoclickerproduction")) || 1;
+let autoclickerWorth = parseInt(localStorage.getItem("autoclickerWorth")) || 100;
+let autoclickerAmount = parseInt(localStorage.getItem("autoclickerAmount")) || 0;
+let autoclickerproduction = parseInt(localStorage.getItem("autoclickerproduction")) || 1;
 let autoclickerinterval;
 
 let autoclickeritem = document.getElementById("autoclicker");
 let autoclickerAmountdis = document.getElementById("autoclickeramount");
 let autoclickerWorthdis = document.getElementById("autoclickercost");
-let autoclickerpersecondinc =
-  parseInt(localStorage.getItem("autoclickerpersecondinc")) || 1;
+let autoclickerpersecondinc = parseInt(localStorage.getItem("autoclickerpersecondinc")) || 1;
 
 let clickbaitbutton = document.getElementById("clickbait");
 let clickbaitAmount = parseInt(localStorage.getItem("clickbaitAmount")) || 0;
 let clickbaitWorth = parseInt(localStorage.getItem("clickbaitWorth")) || 1000;
 let clickbaitAmountdis = document.getElementById("clickbaitamount");
 let clickbaitWorthdis = document.getElementById("clickbaitcost");
-let clickbaitproduction =
-  parseInt(localStorage.getItem("clickbaitproduction")) || 1;
+// The clickbait produces 5 clicks per second
+let clickbaitproduction = parseInt(localStorage.getItem("clickbaitproduction")) || 1;
 let clickbaitinterval;
 
 let clickupgrade = document.getElementById("clickupgrade");
-let clickupgradeifbought =
-  parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
+let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
 let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
@@ -44,12 +39,9 @@ let clicksperseconddis = document.getElementById("clickspersecond");
 let clickspersecond = parseInt(localStorage.getItem("clickspersecond")) || 0;
 
 let autoclickerupgrade = document.getElementById("autoclickerupgrade");
-let autoclickerupgradecostdis = document.getElementById(
-  "autoclickerupgradecost",
-);
+let autoclickerupgradecostdis = document.getElementById("autoclickerupgradecost");
 
-let autoclickerupgradeifbought =
-  parseInt(localStorage.getItem("autoclickerupgradeifbought")) || 0;
+let autoclickerupgradeifbought = parseInt(localStorage.getItem("autoclickerupgradeifbought")) || 0;
 
 let clicksamount = document.getElementById("clicksamount");
 let clickletters = document.getElementById("clickletters");
@@ -61,15 +53,13 @@ let interval;
 let clickfarm = document.getElementById("clickfarm");
 let clickfarmcostdis = document.getElementById("clickfarmcost");
 let clickfarmamountdis = document.getElementById("clickfarmamount");
-// It will produce 25 clicks per second every second
-let clickfarmproduction =
-  parseInt(localStorage.getItem("clickfarmproduction")) || 1;
+// Clickfarmproduces 25 clicks a second
+let clickfarmproduction = parseInt(localStorage.getItem("clickfarmproduction")) || 1;
 let clickfarmcost = parseInt(localStorage.getItem("clickfarmcost")) || 11111;
 let clickfarmamount = parseInt(localStorage.getItem("clickfarmamount")) || 0;
 let clickfarminterval;
 
 function formatNumber(number) {
-  //Will proably become the biggest function
   if (number < 1e3) {
     return number;
   } else if (number >= 1e3 && number < 1e6) {
@@ -110,8 +100,7 @@ for (i = 0; i < clickbaitAmount; i++) {
 }
 
 function displayclicks() {
-  clicksperseconddis.innerHTML =
-    "Per" + " " + "Second" + ":" + " " + formatNumber(clickspersecond);
+  clicksperseconddis.innerHTML = "Per" + " " + "Second" + ":" + " " + formatNumber(clickspersecond);
   if (click >= 1e3 && click < 1e6) {
     clicksamount.innerHTML = formatclick(click);
     clickletters.innerHTML = " Thousand" + " clicks";
@@ -122,18 +111,9 @@ function displayclicks() {
     clicksamount.innerHTML = formatclick(click);
     clickletters.innerHTML = " Million" + " clicks";
   }
-  clickscurrently.innerHTML =
-    "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
-  clickseverearnt.innerHTML =
-    "Total" + " " + "Clicks" + ":" + " " + formatNumber(clicktotalearnt);
-  clicksperclickdis.innerHTML =
-    "Clicks" +
-    " " +
-    "per" +
-    " " +
-    "Click" +
-    ":" +
-    " " +
+  clickscurrently.innerHTML = "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
+  clickseverearnt.innerHTML = "Total" + " " + "Clicks" + ":" + " " + formatNumber(clicktotalearnt);
+  clicksperclickdis.innerHTML = "Clicks" + " " + "per" + " " + "Click" + ":" + " " +
     formatNumber(clickRate);
 }
 
@@ -174,10 +154,7 @@ function save() {
   localStorage.setItem("clickbaitproduction", clickbaitproduction);
   localStorage.setItem("clicktotalearnt", clicktotalearnt);
   localStorage.setItem("clickspersecond", clickspersecond);
-  localStorage.setItem(
-    "autoclickerupgradeifbought",
-    autoclickerupgradeifbought,
-  );
+  localStorage.setItem("autoclickerupgradeifbought", autoclickerupgradeifbought);
   localStorage.setItem("autoclickerpersecondinc", autoclickerpersecondinc);
   localStorage.setItem("clickfarmcost", clickfarmcost);
   localStorage.setItem("clickfarmamount", clickfarmamount);
@@ -211,7 +188,6 @@ function autoclickerbuy() {
     autoclickerWorth = Math.round(autoclickerWorth);
     clickspersecond = clickspersecond + autoclickerpersecondinc;
     autoclickerAmount = autoclickerAmount + 1;
-    //It was like hell while making this smooth
     if (interval) {
       clearInterval(interval);
       interval = null;
