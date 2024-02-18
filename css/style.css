@@ -20,9 +20,8 @@ body {
 #displayclick {
   font-size: 35px;
   position: absolute;
-  left: 85px;
-  top: 60px;
   margin: auto;
+  top: 55px;
   font-family: cursive;
   width: 100%;
   user-select: none;
@@ -293,14 +292,20 @@ body {
 
 #clickspersecond {
   position: absolute;
-  top: 160px;
-  left: 155px;
+  left: 0;
+  right: 0;
+  top: 155px;
+  margin: auto;
+  text-align: center;
 }
 
 #clicksamount {
   position: absolute;
-  top: 10px;
-  left: 100px;
+  top: 20px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  margin: auto;
 }
 
 #autoclickerupgrade {
@@ -334,10 +339,10 @@ body {
 
 #clickletters {
   position: absolute;
-}
-
-#clicknumbers {
-  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
 }
 
 #clickpopup {
@@ -392,8 +397,9 @@ body {
 #clickfarmicon {
   position: absolute;
   top: 145px;
-  left: 20px;
+  left: 10px;
   z-index: 1;
+  border-radius: 50%;
 }
 
 #clickfarmcost {

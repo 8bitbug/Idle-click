@@ -56,12 +56,7 @@ let clickletters = document.getElementById("clickletters");
 
 let intervaltime = 0;
 const intervaltimedelay = 1000 - intervaltime;
-let interval = setInterval(() => {
-  intervaltime = intervaltime + 1;
-  if (intervaltime >= 1000) {
-    intervaltime = 0;
-  }
-}, 1);
+let interval;
 
 let clickfarm = document.getElementById("clickfarm");
 let clickfarmcostdis = document.getElementById("clickfarmcost");
@@ -93,6 +88,12 @@ function formatclick(number) {
     return number;
   } else if (number >= 1e3 && number < 1e6) {
     return (number / 1e3).toFixed(1);
+  } else if (number >= 1e6 && number < 1e9) {
+    return (number / 1e6).toFixed(1);
+  } else if (number >= 1e9 && number < 1e12) {
+    return (number / 1e9).toFixed(1);
+  } else if (number >= 1e12) {
+    return (number / 1e12).toFixed(1);
   }
 }
 
@@ -112,17 +113,14 @@ function displayclicks() {
   clicksperseconddis.innerHTML =
     "Per" + " " + "Second" + ":" + " " + formatNumber(clickspersecond);
   if (click >= 1e3 && click < 1e6) {
-    displayclick.style.top = "55px";
-    displayclick.style.left = "85px";
     clicksamount.innerHTML = formatclick(click);
     clickletters.innerHTML = " Thousand" + " clicks";
-    clickletters.style.top = "45px";
   } else if (click < 1e3) {
-    displayclick.style.top = "100px";
-    displayclick.style.left = "140px";
-    clickletters.style.top = "1px";
     clickletters.innerHTML = click + " clicks";
     clicksamount.innerHTML = " ";
+  } else if (click >= 1e6 && click < 1e9) {
+    clicksamount.innerHTML = formatclick(click);
+    clickletters.innerHTML = " Million" + " clicks";
   }
   clickscurrently.innerHTML =
     "Clicks" + " " + "Currently" + ":" + " " + formatNumber(click);
@@ -214,13 +212,22 @@ function autoclickerbuy() {
     clickspersecond = clickspersecond + autoclickerpersecondinc;
     autoclickerAmount = autoclickerAmount + 1;
     //It was like hell while making this smooth
-    clearInterval(interval);
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+      intervaltime = 0;
+    }
     intervaltime = 0;
-    interval;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
     if (autoclickerAmount >= 2) {
       setTimeout(() => {
         autoclickerproducing();
-      }, intervaltimedelay * autoclickerAmount);
+      }, intervaltimedelay);
     } else if (autoclickerAmount === 1) {
       autoclickerproducing();
     }
@@ -236,7 +243,9 @@ autoclickeritem.addEventListener("click", function () {
 setInterval(() => {
   displayclicks();
   displayautoclicker();
-}, 1);
+  displayclickbait();
+  displayclickfarm();
+}, 1000);
 
 function checkAndDisplayClickUpgrade() {
   if (clickupgradeifbought === 1) {
@@ -286,13 +295,22 @@ function clickbaitbuy() {
     clickbaitWorth = clickbaitWorth * (1 + 0.15);
     clickbaitWorth = Math.round(clickbaitWorth);
     clickspersecond = clickspersecond + 5;
-    clearInterval(interval);
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+      intervaltime = 0;
+    }
     intervaltime = 0;
-    interval;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
     if (clickbaitAmount >= 2) {
       setTimeout(() => {
         clickbaitproducing();
-      }, intervaltimedelay * clickbaitAmount);
+      }, intervaltimedelay);
     } else if (clickbaitAmount === 1) {
       clickbaitproducing();
     }
@@ -364,13 +382,22 @@ function buyclickfarm() {
     clickfarmcost = clickfarmcost * (1 + 0.15);
     clickfarmcost = Math.round(clickfarmcost);
     clickspersecond = clickspersecond + 25;
-    clearInterval(interval);
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+      intervaltime = 0;
+    }
     intervaltime = 0;
-    interval;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
     if (clickfarmamount >= 2) {
       setTimeout(() => {
         clickfarmproducing();
-      }, intervaltimedelay * clickfarmamount);
+      }, intervaltimedelay);
     } else if (clickfarmamount === 1) {
       clickfarmproducing();
     }
