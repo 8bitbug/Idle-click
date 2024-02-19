@@ -24,7 +24,7 @@ let clickupgrade = document.getElementById("clickupgrade");
 let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
-let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
+let clickRate = parseInt(localStorage.getItem("clickRate")) || 100;
 let clicktotalearnt = parseInt(localStorage.getItem("clicktotalearnt")) || 0;
 
 let audio = new Audio("/Sounds/click-6.mp3");
@@ -91,12 +91,42 @@ for (i = 0; i < autoclickerAmount; i++) {
   setTimeout(() => {
     autoclickerproducing();
   }, 400 * i);
+  interval = null;
+  intervaltime = 0;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
 }
 
 for (i = 0; i < clickbaitAmount; i++) {
   setTimeout(() => {
     clickbaitproducing();
   }, 400 * i);
+  interval = null;
+  intervaltime = 0;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
+}
+
+for (i = 0; i < clickfarmamount; i++) {
+  setTimeout(() => {
+    clickfarmproducing();
+  }, 400 * i)
+  interval = null;
+  intervaltime = 0;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
 }
 
 function displayclicks() {
@@ -120,11 +150,11 @@ function displayclicks() {
 displayclicks();
 
 mainclickbutton.addEventListener("click", function () {
+  audio = new Audio("./Sounds/click.mp4");
+  audio.play();
   click = click + clickRate;
   clicktotalearnt = clicktotalearnt + clickRate;
   displayclicks();
-  audio = new Audio("/Sounds/click-6.mp3");
-  audio.play();
   isPlaying = true;
   let clickpopup = document.createElement("div");
   clickpopup.setAttribute("id", "clickpopup");
@@ -183,30 +213,23 @@ function autoclickerproducing() {
 
 function autoclickerbuy() {
   if (click >= autoclickerWorth) {
-    click = click - autoclickerWorth;
-    autoclickerWorth = autoclickerWorth * (1 + 0.15);
-    autoclickerWorth = Math.round(autoclickerWorth);
-    clickspersecond = clickspersecond + autoclickerpersecondinc;
-    autoclickerAmount = autoclickerAmount + 1;
-    if (interval) {
-      clearInterval(interval);
+    clearInterval(interval);
       interval = null;
       intervaltime = 0;
-    }
-    intervaltime = 0;
     interval = setInterval(() => {
       intervaltime = intervaltime + 1;
       if (intervaltime >= 1000) {
         intervaltime = 0;
       }
     }, 1);
-    if (autoclickerAmount >= 2) {
+    click = click - autoclickerWorth;
+    autoclickerWorth = autoclickerWorth * (1 + 0.15);
+    autoclickerWorth = Math.round(autoclickerWorth);
+    clickspersecond = clickspersecond + autoclickerpersecondinc;
+    autoclickerAmount = autoclickerAmount + 1;
       setTimeout(() => {
         autoclickerproducing();
       }, intervaltimedelay);
-    } else if (autoclickerAmount === 1) {
-      autoclickerproducing();
-    }
     displayautoclicker();
     displayclicks();
   }
@@ -215,13 +238,6 @@ function autoclickerbuy() {
 autoclickeritem.addEventListener("click", function () {
   autoclickerbuy();
 });
-
-setInterval(() => {
-  displayclicks();
-  displayautoclicker();
-  displayclickbait();
-  displayclickfarm();
-}, 1000);
 
 function checkAndDisplayClickUpgrade() {
   if (clickupgradeifbought === 1) {
