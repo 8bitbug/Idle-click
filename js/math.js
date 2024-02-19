@@ -24,7 +24,7 @@ let clickupgrade = document.getElementById("clickupgrade");
 let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
-let clickRate = parseInt(localStorage.getItem("clickRate")) || 100;
+let clickRate = parseInt(localStorage.getItem("clickRate")) || 1000;
 let clicktotalearnt = parseInt(localStorage.getItem("clicktotalearnt")) || 0;
 
 let audio = new Audio("/Sounds/click-6.mp3");
@@ -47,7 +47,7 @@ let clicksamount = document.getElementById("clicksamount");
 let clickletters = document.getElementById("clickletters");
 
 let intervaltime = 0;
-const intervaltimedelay = 1000 - intervaltime;
+let intervaltimedelay = 1000 - intervaltime;
 let interval;
 
 let clickfarm = document.getElementById("clickfarm");
@@ -87,46 +87,24 @@ function formatclick(number) {
   }
 }
 
-for (i = 0; i < autoclickerAmount; i++) {
+for (let i = 0; i < autoclickerAmount; i++) {
   setTimeout(() => {
     autoclickerproducing();
   }, 400 * i);
-  interval = null;
-  intervaltime = 0;
-    interval = setInterval(() => {
-      intervaltime = intervaltime + 1;
-      if (intervaltime >= 1000) {
-        intervaltime = 0;
-      }
-    }, 1);
 }
 
-for (i = 0; i < clickbaitAmount; i++) {
+let clickbaittimeoutsave = 5 * clickbaitAmount * clickbaitAmount;
+
+for (let i = 0; i < clickbaitAmount; i++) {
   setTimeout(() => {
-    clickbaitproducing();
-  }, 400 * i);
-  interval = null;
-  intervaltime = 0;
-    interval = setInterval(() => {
-      intervaltime = intervaltime + 1;
-      if (intervaltime >= 1000) {
-        intervaltime = 0;
-      }
-    }, 1);
-}
+    clickbaitproducing()
+  }, clickbaittimeoutsave * i)
+};
 
-for (i = 0; i < clickfarmamount; i++) {
+for (let i = 0; i < clickfarmamount; i++) {
   setTimeout(() => {
     clickfarmproducing();
   }, 400 * i)
-  interval = null;
-  intervaltime = 0;
-    interval = setInterval(() => {
-      intervaltime = intervaltime + 1;
-      if (intervaltime >= 1000) {
-        intervaltime = 0;
-      }
-    }, 1);
 }
 
 function displayclicks() {
@@ -203,8 +181,11 @@ function displayautoclicker() {
 
 displayautoclicker();
 
-function autoclickerproducing() {
-  autoclickerinterval = setInterval(() => {
+let autoclickerIntervals = [];
+
+function autoclickerproducing(autoclickerIndex) {
+  clearInterval(autoclickerIntervals[autoclickerIndex]);
+  autoclickerIntervals[autoclickerIndex] = setInterval(() => {
     click = click + autoclickerproduction;
     clicktotalearnt = clicktotalearnt + autoclickerproduction;
     displayclicks();
@@ -213,27 +194,22 @@ function autoclickerproducing() {
 
 function autoclickerbuy() {
   if (click >= autoclickerWorth) {
-    clearInterval(interval);
-      interval = null;
-      intervaltime = 0;
-    interval = setInterval(() => {
-      intervaltime = intervaltime + 1;
-      if (intervaltime >= 1000) {
-        intervaltime = 0;
-      }
-    }, 1);
     click = click - autoclickerWorth;
     autoclickerWorth = autoclickerWorth * (1 + 0.15);
     autoclickerWorth = Math.round(autoclickerWorth);
     clickspersecond = clickspersecond + autoclickerpersecondinc;
     autoclickerAmount = autoclickerAmount + 1;
+    for (let i = 0; i < autoclickerAmount; i++) {
       setTimeout(() => {
-        autoclickerproducing();
-      }, intervaltimedelay);
+        autoclickerproducing(i);
+      }, 400 * i)
+    }
     displayautoclicker();
     displayclicks();
   }
 }
+
+
 
 autoclickeritem.addEventListener("click", function () {
   autoclickerbuy();
@@ -265,8 +241,10 @@ clickupgrade.addEventListener("click", function () {
   clickupgradebuy();
 });
 
-function clickbaitproducing() {
-  clickbaitinterval = setInterval(() => {
+let clickbaitIntervals = [];
+
+function clickbaitproducing(clickbaitIndex) {
+  clickbaitIntervals[clickbaitIndex] = setInterval(() => {
     click = click + clickbaitproduction;
     clicktotalearnt = clicktotalearnt + clickbaitproduction;
     displayclicks();
@@ -282,16 +260,9 @@ displayclickbait();
 
 function clickbaitbuy() {
   if (click >= clickbaitWorth) {
-    click = click - clickbaitWorth;
-    clickbaitAmount = clickbaitAmount + 1;
-    clickbaitWorth = clickbaitWorth * (1 + 0.15);
-    clickbaitWorth = Math.round(clickbaitWorth);
-    clickspersecond = clickspersecond + 5;
-    if (interval) {
       clearInterval(interval);
       interval = null;
       intervaltime = 0;
-    }
     intervaltime = 0;
     interval = setInterval(() => {
       intervaltime = intervaltime + 1;
@@ -299,15 +270,16 @@ function clickbaitbuy() {
         intervaltime = 0;
       }
     }, 1);
-    if (clickbaitAmount >= 2) {
-      setTimeout(() => {
-        clickbaitproducing();
-      }, intervaltimedelay);
-    } else if (clickbaitAmount === 1) {
+    click = click - clickbaitWorth;
+    clickbaitAmount = clickbaitAmount + 1;
+    clickbaitWorth = clickbaitWorth * (1 + 0.15);
+    clickbaitWorth = Math.round(clickbaitWorth);
+    clickspersecond = clickspersecond + 5;
+    setTimeout(() => {
       clickbaitproducing();
-    }
-    save();
+    }, intervaltimedelay)
     displayclickbait();
+    displayclick();
   }
 }
 

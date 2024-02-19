@@ -297,6 +297,7 @@ body {
   top: 155px;
   margin: auto;
   text-align: center;
+  user-select: none;
 }
 
 #clicksamount {
