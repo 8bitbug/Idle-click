@@ -24,7 +24,7 @@ let clickupgrade = document.getElementById("clickupgrade");
 let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
-let clickRate = parseInt(localStorage.getItem("clickRate")) || 1000;
+let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
 let clicktotalearnt = parseInt(localStorage.getItem("clicktotalearnt")) || 0;
 
 let audio = new Audio("/Sounds/click-6.mp3");
