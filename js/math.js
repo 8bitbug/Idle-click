@@ -24,7 +24,7 @@ let clickupgrade = document.getElementById("clickupgrade");
 let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
-let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
+let clickRate = parseInt(localStorage.getItem("clickRate")) || 1000;
 let clicktotalearnt = parseInt(localStorage.getItem("clicktotalearnt")) || 0;
 
 let audio = new Audio("/Sounds/click-6.mp3");
@@ -90,11 +90,7 @@ function formatclick(number) {
   }
 }
 
-for (let i = 0; i < autoclickerAmount; i++) {
-  setTimeout(() => {
-    autoclickerproducing();
-  }, 400 * i);
-}
+autoclickerloop();
 
 let clickbaittimeoutsave = 5 * clickbaitAmount * clickbaitAmount;
 
@@ -171,6 +167,7 @@ function save() {
   localStorage.setItem("clickfarmamount", clickfarmamount);
   localStorage.setItem("clickfarmproduction", clickfarmproduction);
   localStorage.setItem("clickbaitupgradeifbought", clickbaitupgradeifbought);
+  localStorage.setItem("clickbaitpersecondinc", clickbaitpersecondinc)
 }
 
 setInterval(() => {
@@ -196,24 +193,39 @@ function autoclickerproducing(autoclickerIndex) {
   }, 1000);
 }
 
+function autoclickerloop() {
+  for (let i = 0; i < autoclickerAmount; i++) {
+    setTimeout(() => {
+      autoclickerproducing(i);
+    }, 400 * i)
+  }
+}
+
 function autoclickerbuy() {
   if (click >= autoclickerWorth) {
+    clearInterval(interval);
+      interval = null;
+      intervaltime = 0;
+    intervaltime = 0;
+    interval = setInterval(() => {
+      intervaltime = intervaltime + 1;
+      if (intervaltime >= 1000) {
+        intervaltime = 0;
+      }
+    }, 1);
     click = click - autoclickerWorth;
     autoclickerWorth = autoclickerWorth * (1 + 0.15);
     autoclickerWorth = Math.round(autoclickerWorth);
     clickspersecond = clickspersecond + autoclickerpersecondinc;
     autoclickerAmount = autoclickerAmount + 1;
-    for (let i = 0; i < autoclickerAmount; i++) {
-      setTimeout(() => {
-        autoclickerproducing(i);
-      }, 400 * i)
-    }
+    setTimeout(() => {
+      autoclickerloop();
+    }, intervaltimedelay)
     displayautoclicker();
     displayclicks();
+    displayautoclickerupgrades();
   }
 }
-
-
 
 autoclickeritem.addEventListener("click", function () {
   autoclickerbuy();
@@ -262,6 +274,8 @@ function displayclickbait() {
 
 displayclickbait();
 
+let clickbaitpersecondinc = parseInt(localStorage.getItem("clickbaitpersecondinc")) || 5;
+
 function clickbaitbuy() {
   if (click >= clickbaitWorth) {
       clearInterval(interval);
@@ -278,12 +292,13 @@ function clickbaitbuy() {
     clickbaitAmount = clickbaitAmount + 1;
     clickbaitWorth = clickbaitWorth * (1 + 0.15);
     clickbaitWorth = Math.round(clickbaitWorth);
-    clickspersecond = clickspersecond + 5;
+    clickspersecond = clickspersecond + clickbaitpersecondinc;
     setTimeout(() => {
       clickbaitproducing();
     }, intervaltimedelay)
     displayclickbait();
     displayclick();
+    displayclickbaitupgrades();
   }
 }
 
@@ -295,15 +310,24 @@ setInterval(() => {
   document.title = formatNumber(click) + " Clicks" + " - Idle Clicker";
 }, 1);
 
+let clickbaitupgradestyle = window.getComputedStyle(clickbaitupgrade);
+
 function autoclickerupgrademove() {
-  autoclickerupgrade.style.left = "6px";
-}
+  if (clickupgradeifbought >= 1) {
+    autoclickerupgrade.style.left = "6px";
+  } else if (clickbaitupgradestyle.getPropertyValue('display') === 'flex' && clickbaitupgrade.getPropertyValue('display') === 'flex') {
+    autoclickerupgrade.style.left = '6px';
+    autoclickerupgrade.style.top = '266px';
+  };
+};
 
 function isautoclickerupgradebought() {
   if (autoclickerupgradeifbought == 1) {
     autoclickerupgrade.remove();
   }
 }
+
+autoclickerupgrademove();
 
 isautoclickerupgradebought();
 
@@ -378,14 +402,26 @@ clickfarm.addEventListener("click", function () {
   buyclickfarm();
 });
 
+let autoclickerupgradestyle = window.getComputedStyle(autoclickerupgrade);
+let clickupgradestyle = window.getComputedStyle(clickupgrade);
+
 function clickbaitupgrademove() {
-  if (autoclickerupgradeifbought >= 1 && clickupgradeifbought >= 1) {
+  if (autoclickerupgradestyle.getPropertyValue('display') === 'none' || clickbaitupgrade.getPropertyValue('display') === 'none') {
+    clickbaitupgrade.style.top = '200px';
+    clickbaitupgrade.style.left = '264px';
+  } else if (autoclickerupgradestyle.getPropertyValue('display') === 'none' && clickbaitupgrade.getPropertyValue('display') === 'none') {
+    clickbaitupgrade.style.top = '200px';
+    clickbaitupgrade.style.left = '6px';
+  } else if (autoclickerupgradestyle.getPropertyValue('display') === 'flex' && clickbaitupgrade.getPropertyValue('display') === 'flex') {
+    clickbaitupgrade.style.top = '266px';
+    clickbaitupgrade.style.left = '6px';
+  } else if (autoclickerupgradeifbought >= 1 && clickupgradeifbought >= 1) {
     clickbaitupgrade.style.top = '200px';
     clickbaitupgrade.style.left = '6px';
   } else if (autoclickerupgradeifbought >= 1 || clickupgradeifbought >= 1) {
     clickbaitupgrade.style.top = '200px';
     clickbaitupgrade.style.left = '264px';
-  }
+  };
 }
 
 function clickbaitupgradebuy() {
@@ -394,6 +430,8 @@ function clickbaitupgradebuy() {
     click = click - 12500;
     clickbaitproduction = clickbaitproduction * 2;
     clickbaitupgradeifbought = clickbaitupgradeifbought + 1;
+    clickbaitpersecondinc = clickbaitpersecondinc * 2;
+    clickspersecond = clickspersecond + (clickbaitAmount * 5);
     checkifclickbaitupgradeisbought();
     displayclick();
   };
@@ -416,9 +454,23 @@ clickbaitupgrade.addEventListener("click", function() {
   checkAndDisplayClickUpgrade();
 })
 
+function displayautoclickerupgrades() {
+  if (click >= 100) {
+    clickupgrade.style.display = 'flex';
+  };
+  if (autoclickerAmount >= 1) {
+    autoclickerupgrade.style.display = 'flex';
+  };
+  autoclickerupgrademove();
+};
+
+function displayclickbaitupgrades() {
+  if (clickbaitAmount >= 1) {
+    clickbaitupgrade.style.display = 'flex';
+  };
+};
+
 setInterval(() => {
-  displayautoclicker();
-  displayclickbait();
-  displayclickfarm();
-  displayclicks();
-}, 100)
+  displayautoclickerupgrades();
+  displayclickbaitupgrades();
+}, 1000)

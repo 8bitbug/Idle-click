@@ -152,7 +152,7 @@ body {
   height: 60px;
   width: 48%;
   border: 5px solid black;
-  display: flex;
+  display: none;
   padding: 1px;
   cursor: pointer;
   align-items: center;
@@ -313,7 +313,7 @@ body {
   height: 60px;
   width: 48%;
   border: 5px solid black;
-  display: flex;
+  display: none;
   padding: 1px;
   cursor: pointer;
   align-items: center;
@@ -445,7 +445,7 @@ body {
   height: 60px;
   width: 48%;
   border: 5px solid black;
-  display: flex;
+  display: none;
   padding: 1px;
   cursor: pointer;
   align-items: center;
