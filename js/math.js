@@ -53,11 +53,14 @@ let interval;
 let clickfarm = document.getElementById("clickfarm");
 let clickfarmcostdis = document.getElementById("clickfarmcost");
 let clickfarmamountdis = document.getElementById("clickfarmamount");
-// Clickfarmproduces 25 clicks a second
+// Click farm produces 25 clicks a second
 let clickfarmproduction = parseInt(localStorage.getItem("clickfarmproduction")) || 1;
 let clickfarmcost = parseInt(localStorage.getItem("clickfarmcost")) || 11111;
 let clickfarmamount = parseInt(localStorage.getItem("clickfarmamount")) || 0;
 let clickfarminterval;
+
+let clickbaitupgrade = document.getElementById('clickbaitupgrade');
+let clickbaitupgradeifbought = parseInt(localStorage.getItem("clickbaitupgradeifbought")) || 0;
 
 function formatNumber(number) {
   if (number < 1e3) {
@@ -167,6 +170,7 @@ function save() {
   localStorage.setItem("clickfarmcost", clickfarmcost);
   localStorage.setItem("clickfarmamount", clickfarmamount);
   localStorage.setItem("clickfarmproduction", clickfarmproduction);
+  localStorage.setItem("clickbaitupgradeifbought", clickbaitupgradeifbought);
 }
 
 setInterval(() => {
@@ -233,7 +237,7 @@ function clickupgradebuy() {
     autoclickerupgrademove();
     displayclicks();
     checkAndDisplayClickUpgrade();
-    autoclickerupgrademove();
+    clickbaitupgrademove();
   }
 }
 
@@ -311,6 +315,7 @@ function autoclickerupgradebuy() {
     autoclickerupgradeifbought = autoclickerupgradeifbought + 1;
     clickspersecond = clickspersecond + autoclickerAmount;
     autoclickerpersecondinc = autoclickerpersecondinc * 2;
+    clickbaitupgrademove();
   }
 }
 
@@ -372,3 +377,41 @@ function buyclickfarm() {
 clickfarm.addEventListener("click", function () {
   buyclickfarm();
 });
+
+function clickbaitupgrademove() {
+  if (autoclickerupgradeifbought >= 1 && clickupgradeifbought >= 1) {
+    clickbaitupgrade.style.top = '200px';
+    clickbaitupgrade.style.left = '6px';
+  } else if (autoclickerupgradeifbought >= 1 || clickupgradeifbought >= 1) {
+    clickbaitupgrade.style.top = '200px';
+    clickbaitupgrade.style.left = '264px';
+  }
+}
+
+function clickbaitupgradebuy() {
+  if (click >= 12500) {
+    clickbaitupgrade.remove();
+    click = click - 12500;
+    clickbaitproduction = clickbaitproduction * 2;
+    clickbaitupgradeifbought = clickbaitupgradeifbought + 1;
+    checkifclickbaitupgradeisbought();
+    displayclick();
+  };
+};
+
+function checkifclickbaitupgradeisbought() {
+  if (clickbaitupgradeifbought >= 1) {
+    clickbaitupgrade.remove();
+  }
+}
+
+checkifclickbaitupgradeisbought();
+
+clickbaitupgrademove();
+
+document.getElementById("clickbaitupgradecost").innerHTML = formatNumber(12500);
+
+clickbaitupgrade.addEventListener("click", function() {
+  clickbaitupgradebuy();
+  checkAndDisplayClickUpgrade();
+})
