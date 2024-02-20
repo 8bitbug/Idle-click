@@ -415,3 +415,10 @@ clickbaitupgrade.addEventListener("click", function() {
   clickbaitupgradebuy();
   checkAndDisplayClickUpgrade();
 })
+
+setInterval(() => {
+  displayautoclicker();
+  displayclickbait();
+  displayclickfarm();
+  displayclicks();
+}, 100)
