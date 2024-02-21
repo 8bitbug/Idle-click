@@ -12,6 +12,10 @@ let settingscontent = document.getElementById("settingscontent");
 
 let saveButton = document.getElementById("saveButton");
 let deleteButton = document.getElementById("deletesaveButton");
+let exportsavebutton = document.getElementById("exportsave");
+let exportsavecontent = document.getElementById("exportsavecontent");
+let exportcontentclose = document.getElementById("exportsavecontentclose");
+let jsonexportdata = document.getElementById("jsonexportdata");
 
 mainclickbutton.addEventListener("mouseover", function () {
   mainclickbutton.style.transform = "scale(1.1)";
@@ -83,3 +87,15 @@ function openinformation() {
 infoButton.addEventListener("click", () => {
   openinformation();
 });
+
+function exportsaveopencontent() {
+  exportsavecontent.style.display = 'flex';
+}
+
+exportsavebutton.addEventListener("click", function() {
+  exportsaveopencontent();
+})
+
+exportcontentclose.addEventListener("click", function() {
+  exportsavecontent.style.display = 'none';
+})

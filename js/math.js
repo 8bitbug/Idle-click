@@ -24,7 +24,7 @@ let clickupgrade = document.getElementById("clickupgrade");
 let clickupgradeifbought = parseInt(localStorage.getItem("clickupgradeifbought")) || 0;
 
 let click = parseInt(localStorage.getItem("click")) || 0;
-let clickRate = parseInt(localStorage.getItem("clickRate")) || 1000;
+let clickRate = parseInt(localStorage.getItem("clickRate")) || 1;
 let clicktotalearnt = parseInt(localStorage.getItem("clicktotalearnt")) || 0;
 
 let audio = new Audio("/Sounds/click-6.mp3");
@@ -57,6 +57,7 @@ let clickfarmamountdis = document.getElementById("clickfarmamount");
 let clickfarmproduction = parseInt(localStorage.getItem("clickfarmproduction")) || 1;
 let clickfarmcost = parseInt(localStorage.getItem("clickfarmcost")) || 11111;
 let clickfarmamount = parseInt(localStorage.getItem("clickfarmamount")) || 0;
+let clickfarmpersecondinc = parseInt(localStorage.getItem("clickfarmpersecondinc")) || 25;
 let clickfarminterval;
 
 let clickbaitupgrade = document.getElementById('clickbaitupgrade');
@@ -64,6 +65,11 @@ let clickbaitupgradeifbought = parseInt(localStorage.getItem("clickbaitupgradeif
 
 let clickfarmupgrade = document.getElementById("clickfarmupgrade");
 let clickfarmupgradeifbought = parseInt(localStorage.getItem("clickfarmupgradeifbought")) || 0;
+
+let UpgradeCell1 = document.getElementById('upgradeslot1');
+let UpgradeCell2 = document.getElementById('upgradeslot2');
+let UpgradeCell3 = document.getElementById('upgradeslot3');
+let UpgradeCell4 = document.getElementById('upgradeslot4');
 
 function formatNumber(number) {
   if (number < 1e3) {
@@ -172,6 +178,7 @@ function save() {
   localStorage.setItem("clickbaitupgradeifbought", clickbaitupgradeifbought);
   localStorage.setItem("clickbaitpersecondinc", clickbaitpersecondinc);
   localStorage.setItem("clickfarmupgradeifbought", clickfarmupgradeifbought);
+  localStorage.setItem("clickfarmpersecondinc", clickfarmpersecondinc);
 }
 
 setInterval(() => {
@@ -235,21 +242,26 @@ autoclickeritem.addEventListener("click", function () {
   autoclickerbuy();
 });
 
-function checkAndDisplayClickUpgrade() {
-  if (clickupgradeifbought === 1) {
-    removeAllChildren(UpgradeCell1);
+function removeAllChildren(element) {
+  while (element.firstChild !== childToExcludeupdate()) {
+    element.removeChild(element.firstChild);
   }
 }
 
-checkAndDisplayClickUpgrade();
+ function childToExcludeupdate() {
+  if (document.getElementById("autoclickerupgrade") == null && document.getElementById("clickbaitupgrade") == null) {
+      childToExclude = document.getElementById("clickfarmupgrade");
+  } else if (document.getElementById("autoclickerupgrade") == null) {
+      childToExclude = document.getElementById("clickbaitupgrade");
+  }
+};
 
 function clickupgradebuy() {
   if (click >= 250) {
     click = click - 250;
     clickRate = clickRate * 2;
     clickupgradeifbought = 1;
-    removeAllChildren(UpgradeCell1)
-    checkAndDisplayClickUpgrade();
+    clickupgrade.remove();
   }
 }
 
@@ -310,13 +322,21 @@ setInterval(() => {
   document.title = formatNumber(click) + " Clicks" + " - Idle Clicker";
 }, 1);
 
-function isautoclickerupgradebought() {
+function upgradesbought() {
   if (autoclickerupgradeifbought == 1) {
     autoclickerupgrade.remove();
   }
+
+  if (clickupgradeifbought == 1) {
+    clickupgrade.remove();
+  }
+
+  if (clickfarmupgradeifbought == 1) {
+    clickfarmupgrade.remove();
+  }
 }
 
-isautoclickerupgradebought();
+upgradesbought();
 
 function autoclickerupgradebuy() {
   if (click >= 2500) {
@@ -357,7 +377,7 @@ function buyclickfarm() {
     clickfarmamount = clickfarmamount + 1;
     clickfarmcost = clickfarmcost * (1 + 0.15);
     clickfarmcost = Math.round(clickfarmcost);
-    clickspersecond = clickspersecond + 25;
+    clickspersecond = clickspersecond + clickfarmpersecondinc;
     if (interval) {
       clearInterval(interval);
       interval = null;
@@ -410,7 +430,6 @@ document.getElementById("clickbaitupgradecost").innerHTML = formatNumber(12500);
 
 clickbaitupgrade.addEventListener("click", function() {
   clickbaitupgradebuy();
-  checkAndDisplayClickUpgrade();
 })
 
 function displayautoclickerupgrades() {
@@ -432,60 +451,46 @@ function displayclickbaitupgrades() {
 setInterval(() => {
   displayautoclickerupgrades();
   displayclickbaitupgrades();
+  moveUpgradesToPreviousCell();
 }, 1000)
-
-let UpgradeCell1 = document.getElementById('upgradeslot1');
-let UpgradeCell2 = document.getElementById('upgradeslot2');
-let UpgradeCell3 = document.getElementById('upgradeslot3');
-let UpgradeCell4 = document.getElementById('upgradeslot4');
-
-function childToExcludeupdate() {
-  if (document.getElementById("autoclickerupgrade") == null && document.getElementById("clickbaitupgrade") == null) {
-      childToExclude = document.getElementById("clickfarmupgrade");
-  } else if (document.getElementById("autoclickerupgrade") == null) {
-      childToExclude = document.getElementById("clickbaitupgrade");
-  }
-}
 
 childToExcludeupdate();
 
-function removeAllChildren(element) {
- while (element.firstChild !== childToExclude) {
-   element.removeChild(element.firstChild);
- }
+function moveUpgradesToPreviousCell() {
+  if (UpgradeCell1.childNodes.length === 0 || UpgradeCell1.children[0] == null) {
+    while (UpgradeCell2.firstChild) {
+      UpgradeCell1.appendChild(UpgradeCell2.firstChild);
+    }
+  }
+
+  if (UpgradeCell2.childNodes.length === 0) {
+    while (UpgradeCell3.firstChild) {
+      UpgradeCell2.appendChild(UpgradeCell3.firstChild);
+    }
+  }
+
+  if (UpgradeCell3.childNodes.length === 0) {
+    while (UpgradeCell4.firstChild) {
+      UpgradeCell3.appendChild(UpgradeCell4.firstChild);
+    }
+  }
 }
 
-function moveUpgradesToPreviousCell() {
- if (UpgradeCell1.childNodes.length < 1) {
-   while (UpgradeCell2.firstChild) {
-     UpgradeCell1.appendChild(UpgradeCell2.firstChild);
-   };
- };
+moveUpgradesToPreviousCell();
 
-  if (UpgradeCell2.childNodes.length < 1) {
-   while (UpgradeCell3.firstChild) {
-     UpgradeCell2.appendChild(UpgradeCell3.firstChild);
-   };
- };
-
- if (UpgradeCell3.childNodes.length < 1) {
-  while (UpgradeCell3.firstChild) {
-    UpgradeCell2.appendChild(UpgradeCell4.firstChild);
-  }
- }
-};
 
 setInterval(() => {
   childToExcludeupdate();
-  checkAndDisplayClickUpgrade();
  }, 1)
- 
+
  function clickfarmupgradebuy() {
    if (click >= 32500) {
      click = click - 32500;
      clickfarmproduction = clickfarmproduction * 2;
+     clickfarmpersecondinc = clickfarmpersecondinc * 2;
+     clickspersecond = clickspersecond + (clickfarmamount * 25);
      clickfarmupgradeifbought = clickfarmupgradeifbought + 1;
-     removeAllChildren(UpgradeCell4);
+     clickfarmupgrade.remove()
      displayclick();
    }
  }
@@ -493,14 +498,9 @@ setInterval(() => {
  function checkanddisplayupgrades() {
      clickupgrade.style.display = clickupgradeifbought === 0 && click >= 100 ? 'flex' : 'none';
      autoclickerupgrade.style.display = autoclickerupgradeifbought === 0 && autoclickerAmount >= 1 ? 'flex' : 'none';
- 
-     if (clickbaitAmount >= 1) {
-       clickbaitupgrade.style.display = 'flex';
-     };
-
-     if (clickfarmamount >= 1) {
-      clickfarmupgrade.style.display = 'flex';
-     }
+    
+     clickbaitupgrade.style.display = clickbaitupgradeifbought === 0 && clickbaitAmount >= 1 ? 'flex' : 'none';
+     clickfarmupgrade.style.display = clickfarmupgradeifbought === 0 && clickfarmamount >= 1 ? 'flex' : 'none';
  }
  
 checkanddisplayupgrades();
@@ -509,3 +509,9 @@ checkanddisplayupgrades();
    clickfarmupgradebuy();
    checkanddisplayupgrades();
  });
+
+setInterval(() => {
+  displayclicks();
+  checkanddisplayupgrades();
+  upgradesbought();
+}, 1)

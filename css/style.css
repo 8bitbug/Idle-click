@@ -499,7 +499,6 @@ body {
   cursor: pointer;
   height: 106%;
   width: 100%;
-  display: none;
 }
 
 #clickfarmupgradetitle {
@@ -518,4 +517,44 @@ body {
   right: 35px;
   margin: 0px;
   user-select: none;
+}
+
+#exportsave {
+  position: absolute;
+  left: 255px;
+  top: 100px;
+  border: 5px solid black;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+}
+
+#exportsavecontent {
+  height: 200px;
+  width: 200px;
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 150px;
+  margin: auto;
+  border: 5px;
+  background-color: white;
+  border: 5px solid black;
+  padding: 5px;
+}
+
+#exportsavecontentclose {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+#jsonexportdata {
+  height: 100px;
+  width: 180px;
+  position: absolute;
+  bottom: 5px;
 }
