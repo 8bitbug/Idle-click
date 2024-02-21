@@ -62,6 +62,9 @@ let clickfarminterval;
 let clickbaitupgrade = document.getElementById('clickbaitupgrade');
 let clickbaitupgradeifbought = parseInt(localStorage.getItem("clickbaitupgradeifbought")) || 0;
 
+let clickfarmupgrade = document.getElementById("clickfarmupgrade");
+let clickfarmupgradeifbought = parseInt(localStorage.getItem("clickfarmupgradeifbought")) || 0;
+
 function formatNumber(number) {
   if (number < 1e3) {
     return number;
@@ -167,7 +170,8 @@ function save() {
   localStorage.setItem("clickfarmamount", clickfarmamount);
   localStorage.setItem("clickfarmproduction", clickfarmproduction);
   localStorage.setItem("clickbaitupgradeifbought", clickbaitupgradeifbought);
-  localStorage.setItem("clickbaitpersecondinc", clickbaitpersecondinc)
+  localStorage.setItem("clickbaitpersecondinc", clickbaitpersecondinc);
+  localStorage.setItem("clickfarmupgradeifbought", clickfarmupgradeifbought);
 }
 
 setInterval(() => {
@@ -233,7 +237,7 @@ autoclickeritem.addEventListener("click", function () {
 
 function checkAndDisplayClickUpgrade() {
   if (clickupgradeifbought === 1) {
-    clickupgrade.remove();
+    removeAllChildren(UpgradeCell1);
   }
 }
 
@@ -244,12 +248,8 @@ function clickupgradebuy() {
     click = click - 250;
     clickRate = clickRate * 2;
     clickupgradeifbought = 1;
-    localStorage.setItem("clickupgradeifbought", clickupgradeifbought);
-    clickupgrade.remove();
-    autoclickerupgrademove();
-    displayclicks();
+    removeAllChildren(UpgradeCell1)
     checkAndDisplayClickUpgrade();
-    clickbaitupgrademove();
   }
 }
 
@@ -310,24 +310,11 @@ setInterval(() => {
   document.title = formatNumber(click) + " Clicks" + " - Idle Clicker";
 }, 1);
 
-let clickbaitupgradestyle = window.getComputedStyle(clickbaitupgrade);
-
-function autoclickerupgrademove() {
-  if (clickupgradeifbought >= 1) {
-    autoclickerupgrade.style.left = "6px";
-  } else if (clickbaitupgradestyle.getPropertyValue('display') === 'flex' && clickbaitupgrade.getPropertyValue('display') === 'flex') {
-    autoclickerupgrade.style.left = '6px';
-    autoclickerupgrade.style.top = '266px';
-  };
-};
-
 function isautoclickerupgradebought() {
   if (autoclickerupgradeifbought == 1) {
     autoclickerupgrade.remove();
   }
 }
-
-autoclickerupgrademove();
 
 isautoclickerupgradebought();
 
@@ -339,12 +326,8 @@ function autoclickerupgradebuy() {
     autoclickerupgradeifbought = autoclickerupgradeifbought + 1;
     clickspersecond = clickspersecond + autoclickerAmount;
     autoclickerpersecondinc = autoclickerpersecondinc * 2;
-    clickbaitupgrademove();
+    moveUpgradesToPreviousCell();
   }
-}
-
-if (clickupgradeifbought == 1) {
-  autoclickerupgrademove();
 }
 
 autoclickerupgrade.addEventListener("click", () => {
@@ -402,28 +385,6 @@ clickfarm.addEventListener("click", function () {
   buyclickfarm();
 });
 
-let autoclickerupgradestyle = window.getComputedStyle(autoclickerupgrade);
-let clickupgradestyle = window.getComputedStyle(clickupgrade);
-
-function clickbaitupgrademove() {
-  if (autoclickerupgradestyle.getPropertyValue('display') === 'none' || clickbaitupgrade.getPropertyValue('display') === 'none') {
-    clickbaitupgrade.style.top = '200px';
-    clickbaitupgrade.style.left = '264px';
-  } else if (autoclickerupgradestyle.getPropertyValue('display') === 'none' && clickbaitupgrade.getPropertyValue('display') === 'none') {
-    clickbaitupgrade.style.top = '200px';
-    clickbaitupgrade.style.left = '6px';
-  } else if (autoclickerupgradestyle.getPropertyValue('display') === 'flex' && clickbaitupgrade.getPropertyValue('display') === 'flex') {
-    clickbaitupgrade.style.top = '266px';
-    clickbaitupgrade.style.left = '6px';
-  } else if (autoclickerupgradeifbought >= 1 && clickupgradeifbought >= 1) {
-    clickbaitupgrade.style.top = '200px';
-    clickbaitupgrade.style.left = '6px';
-  } else if (autoclickerupgradeifbought >= 1 || clickupgradeifbought >= 1) {
-    clickbaitupgrade.style.top = '200px';
-    clickbaitupgrade.style.left = '264px';
-  };
-}
-
 function clickbaitupgradebuy() {
   if (click >= 12500) {
     clickbaitupgrade.remove();
@@ -445,8 +406,6 @@ function checkifclickbaitupgradeisbought() {
 
 checkifclickbaitupgradeisbought();
 
-clickbaitupgrademove();
-
 document.getElementById("clickbaitupgradecost").innerHTML = formatNumber(12500);
 
 clickbaitupgrade.addEventListener("click", function() {
@@ -455,17 +414,13 @@ clickbaitupgrade.addEventListener("click", function() {
 })
 
 function displayautoclickerupgrades() {
-  
-  if (autoclickerAmount >= 1) {
-    autoclickerupgrade.style.display = 'flex';
-  }
   if (click >= 100) {
     clickupgrade.style.display = 'flex';
   };
   if (autoclickerAmount >= 1) {
     autoclickerupgrade.style.display = 'flex';
   };
-  autoclickerupgrademove();
+  moveUpgradesToPreviousCell();
 };
 
 function displayclickbaitupgrades() {
@@ -478,3 +433,79 @@ setInterval(() => {
   displayautoclickerupgrades();
   displayclickbaitupgrades();
 }, 1000)
+
+let UpgradeCell1 = document.getElementById('upgradeslot1');
+let UpgradeCell2 = document.getElementById('upgradeslot2');
+let UpgradeCell3 = document.getElementById('upgradeslot3');
+let UpgradeCell4 = document.getElementById('upgradeslot4');
+
+function childToExcludeupdate() {
+  if (document.getElementById("autoclickerupgrade") == null && document.getElementById("clickbaitupgrade") == null) {
+      childToExclude = document.getElementById("clickfarmupgrade");
+  } else if (document.getElementById("autoclickerupgrade") == null) {
+      childToExclude = document.getElementById("clickbaitupgrade");
+  }
+}
+
+childToExcludeupdate();
+
+function removeAllChildren(element) {
+ while (element.firstChild !== childToExclude) {
+   element.removeChild(element.firstChild);
+ }
+}
+
+function moveUpgradesToPreviousCell() {
+ if (UpgradeCell1.childNodes.length < 1) {
+   while (UpgradeCell2.firstChild) {
+     UpgradeCell1.appendChild(UpgradeCell2.firstChild);
+   };
+ };
+
+  if (UpgradeCell2.childNodes.length < 1) {
+   while (UpgradeCell3.firstChild) {
+     UpgradeCell2.appendChild(UpgradeCell3.firstChild);
+   };
+ };
+
+ if (UpgradeCell3.childNodes.length < 1) {
+  while (UpgradeCell3.firstChild) {
+    UpgradeCell2.appendChild(UpgradeCell4.firstChild);
+  }
+ }
+};
+
+setInterval(() => {
+  childToExcludeupdate();
+  checkAndDisplayClickUpgrade();
+ }, 1)
+ 
+ function clickfarmupgradebuy() {
+   if (click >= 32500) {
+     click = click - 32500;
+     clickfarmproduction = clickfarmproduction * 2;
+     clickfarmupgradeifbought = clickfarmupgradeifbought + 1;
+     removeAllChildren(UpgradeCell4);
+     displayclick();
+   }
+ }
+ 
+ function checkanddisplayupgrades() {
+     clickupgrade.style.display = clickupgradeifbought === 0 && click >= 100 ? 'flex' : 'none';
+     autoclickerupgrade.style.display = autoclickerupgradeifbought === 0 && autoclickerAmount >= 1 ? 'flex' : 'none';
+ 
+     if (clickbaitAmount >= 1) {
+       clickbaitupgrade.style.display = 'flex';
+     };
+
+     if (clickfarmamount >= 1) {
+      clickfarmupgrade.style.display = 'flex';
+     }
+ }
+ 
+checkanddisplayupgrades();
+
+ clickfarmupgrade.addEventListener("click", function() {
+   clickfarmupgradebuy();
+   checkanddisplayupgrades();
+ });

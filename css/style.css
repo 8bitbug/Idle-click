@@ -148,31 +148,35 @@ body {
   user-select: none;
 }
 
-#clickupgrade {
+#upgradeslot1 {
   height: 60px;
   width: 48%;
-  border: 5px solid black;
-  display: none;
-  padding: 1px;
-  cursor: pointer;
-  align-items: center;
   position: absolute;
   left: 6px;
   top: 200px;
+}
+
+#clickupgrade {
+  border: 5px solid black;
+  padding: 1px;
+  cursor: pointer;
+  align-items: center;
   user-select: none;
+  height: 107%;
+  width: 100%;
 }
 
 #clickupgradeicon {
   font-size: 30px;
   font-weight: 900;
   position: absolute;
-  left: 10px;
+  left: 20px;
 }
 
 #clickupgradecost {
   font-size: 15px;
   position: absolute;
-  bottom: 1px;
+  bottom: 3px;
   right: 65px;
 }
 
@@ -180,7 +184,7 @@ body {
   font-size: 15px;
   font-weight: 300;
   position: absolute;
-  top: 1px;
+  top: 5px;
   right: 35px;
 }
 
@@ -309,17 +313,19 @@ body {
   margin: auto;
 }
 
-#autoclickerupgrade {
+#upgradeslot2 {
   height: 60px;
   width: 48%;
-  border: 5px solid black;
-  display: none;
-  padding: 1px;
-  cursor: pointer;
-  align-items: center;
   position: absolute;
   right: 6px;
   top: 200px;
+}
+
+#autoclickerupgrade {
+  border: 5px solid black;
+  padding: 1px;
+  cursor: pointer;
+  align-items: center;
   user-select: none;
 }
 
@@ -441,13 +447,9 @@ body {
   font-size: 25px;
 }
 
-#clickbaitupgrade {
+#upgradeslot3 {
   height: 60px;
   width: 48%;
-  border: 5px solid black;
-  display: none;
-  padding: 1px;
-  cursor: pointer;
   align-items: center;
   position: absolute;
   left: 6px;
@@ -455,11 +457,18 @@ body {
   user-select: none;
 }
 
+#clickbaitupgrade {
+  border: 5px solid black;
+  display: none;
+  padding: 1px;
+  cursor: pointer;
+}
+
 #clickbaitupgradetitle {
   font-size: 15px;
   font-weight: 500;
   position: absolute;
-  top: 3px;
+  top: 5px;
   right: 65px;
   user-select: none;
 }
@@ -469,6 +478,44 @@ body {
   position: absolute;
   bottom: 2px;
   right: 50px;
+  margin: 0px;
+  user-select: none;
+}
+
+#upgradeslot4 {
+  height: 60px;
+  width: 48%;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 6px;
+  top: 268px;
+  user-select: none;
+}
+
+#clickfarmupgrade {
+  border: 5px solid black;
+  padding: 1px;
+  cursor: pointer;
+  height: 106%;
+  width: 100%;
+  display: none;
+}
+
+#clickfarmupgradetitle {
+  font-size: 15px;
+  font-weight: 500;
+  position: absolute;
+  top: 5px;
+  right: 65px;
+  user-select: none;
+}
+
+#clickfarmupgradecost {
+  font-size: 15px;
+  position: absolute;
+  bottom: 2px;
+  right: 35px;
   margin: 0px;
   user-select: none;
 }
