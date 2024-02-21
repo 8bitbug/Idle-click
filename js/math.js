@@ -455,6 +455,10 @@ clickbaitupgrade.addEventListener("click", function() {
 })
 
 function displayautoclickerupgrades() {
+  
+  if (autoclickerAmount >= 1) {
+    autoclickerupgrade.style.display = 'flex';
+  }
   if (click >= 100) {
     clickupgrade.style.display = 'flex';
   };
