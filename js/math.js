@@ -265,6 +265,7 @@ function clickupgradebuy() {
     clickRate = clickRate * 2;
     clickupgradeifbought = 1;
     clickupgrade.remove();
+    moveUpgrades();
   }
 }
 
@@ -401,6 +402,7 @@ function buyclickfarm() {
       clickfarmproducing();
     }
     displayclickfarm();
+    moveUpgrades();
   }
 }
 
@@ -418,6 +420,7 @@ function clickbaitupgradebuy() {
     clickspersecond = clickspersecond + (clickbaitAmount * 5);
     checkifclickbaitupgradeisbought();
     displayclick();
+    moveUpgrades();
   };
 };
 
@@ -442,7 +445,6 @@ function displayautoclickerupgrades() {
   if (autoclickerAmount >= 1) {
     autoclickerupgrade.style.display = 'flex';
   };
-  moveUpgradesToPreviousCell();
 };
 
 function displayclickbaitupgrades() {
@@ -454,44 +456,35 @@ function displayclickbaitupgrades() {
 setInterval(() => {
   displayautoclickerupgrades();
   displayclickbaitupgrades();
-  moveUpgradesToPreviousCell();
 }, 1000)
 
 childToExcludeupdate();
 
-function moveUpgradesToPreviousCell() {
-  if (UpgradeCell4.children.length === 0) {
+function moveUpgrades() {
+  if (UpgradeCell4.children.length == 0) {
     while (UpgradeCell5.childNodes[0]) {
       UpgradeCell4.appendChild(UpgradeCell5.childNodes[0]);
     }
   }
 
-  if (UpgradeCell3.children.length === 0) {
-      while (UpgradeCell4.childNodes[0]) {
-          UpgradeCell3.appendChild(UpgradeCell4.childNodes[0])
-      }
+  if (UpgradeCell3.children.length == 0) {
+    while (UpgradeCell4.childNodes[0]) {
+      UpgradeCell3.appendChild(UpgradeCell4.childNodes[0]);
+    }
   }
 
-  if (UpgradeCell2.children.length === 0) {
+  if (UpgradeCell2.children.length == 0) {
     while (UpgradeCell3.childNodes[0]) {
-        UpgradeCell2.appendChild(UpgradeCell3.childNodes[0]);
+      UpgradeCell2.appendChild(UpgradeCell3.childNodes[0]);
     }
   }
 
-  if (UpgradeCell2.children.length > 1) {
-    while (UpgradeCell2.children[1]) {
-      UpgradeCell3.appendChild(UpgradeCell2.children[1])
-    }
-  }
-
-  if (UpgradeCell1.children.length === 0) {
+  if (UpgradeCell1.children.length == 0) {
     while (UpgradeCell2.childNodes[0]) {
-        UpgradeCell1.appendChild(UpgradeCell2.childNodes[0])
+      UpgradeCell1.appendChild(UpgradeCell2.childNodes[0]);
     }
- }
+  }
 }
-
-moveUpgradesToPreviousCell();
 
 setInterval(() => {
   childToExcludeupdate();
@@ -506,22 +499,22 @@ setInterval(() => {
      clickfarmupgradeifbought = clickfarmupgradeifbought + 1;
      clickfarmupgrade.remove()
      displayclick();
+     moveUpgrades();
+     checkanddisplayupgrades();
    }
  }
  
  function checkanddisplayupgrades() {
   if (clickupgradeifbought === 0 && click >= 100) {
     clickupgrade.style.display = 'flex';
-    UpgradeCell4.appendChild(clickupgrade);
-    moveUpgradesToPreviousCell();
+    UpgradeCell5.appendChild(clickupgrade);
 } else {
     clickupgrade.style.display = 'none';
 }
 
 if (autoclickerupgradeifbought === 0 && autoclickerAmount >= 1) {
     autoclickerupgrade.style.display = 'flex';
-    UpgradeCell4.appendChild(autoclickerupgrade);
-    moveUpgradesToPreviousCell();
+    UpgradeCell5.appendChild(autoclickerupgrade);
 } else {
     autoclickerupgrade.style.display = 'none';
 }
@@ -529,15 +522,13 @@ if (autoclickerupgradeifbought === 0 && autoclickerAmount >= 1) {
 if (clickbaitupgradeifbought === 0 && clickbaitAmount >= 1) {
     clickbaitupgrade.style.display = 'flex';
     UpgradeCell5.appendChild(clickbaitupgrade);
-    moveUpgradesToPreviousCell();
 } else {
     clickbaitupgrade.style.display = 'none';
 }
 
 if (clickfarmupgradeifbought === 0 && clickfarmamount >= 1) {
     clickfarmupgrade.style.display = 'flex';
-    UpgradeCell4.appendChild(clickfarmupgrade);
-    moveUpgradesToPreviousCell();
+    UpgradeCell5.appendChild(clickfarmupgrade);
 } else {
     clickfarmupgrade.style.display = 'none';
  }
@@ -552,9 +543,6 @@ checkanddisplayupgrades();
 
 setInterval(() => {
   displayclicks();
-  checkanddisplayupgrades();
   upgradesbought();
-  moveUpgradesToPreviousCell();
-}, 1)
-
-alert("There are many Bugs")
+  moveUpgrades();
+}, 100)
