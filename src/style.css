@@ -285,6 +285,7 @@ body {
 }
   
 #clickfarmtitle {
+    font-size: 19px;
     position: absolute;
     top: 135px;
     left: 90px;

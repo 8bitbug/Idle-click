@@ -11,7 +11,7 @@ let content = {
     settings: {
         settingscontent: document.getElementById('settingscontent'),
         saveButton: document.getElementById('saveButton'),
-        deletesaveButton: document.getElementById('deletesavebutton'),
+        deletesaveButton: document.getElementById('deletesaveButton'),
     },
 }
 
@@ -27,4 +27,13 @@ function opensettings() {
 
 extrabuttons.settings.addEventListener("click", () => {
     opensettings();
+})
+
+content.settings.saveButton.addEventListener("click", () => {
+    save();
+})
+
+content.settings.deletesaveButton.addEventListener("click", () => {
+    localStorage.clear();
+    location.reload();
 })
