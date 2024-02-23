@@ -4,118 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
-    <link href="./output.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="./src/style.css">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body>
-    <div id="clicksection" class="h-screen">
+    <section id="leftSection">
         <div id="displayclick">
-            <div id="clicksamount"></div><br>
-            <div id="clickletters"></div>
+            <div id="clicknumber"></div>
+            <div id="clickletter"></div>
         </div>
-        <div id="clickspersecond"></div>
-        <img id="mainclickbutton" src="https://cdn-icons-png.flaticon.com/512/1828/1828166.png" height="200px" width="200px">
-    </div>
-    <div id="extrasection" class="h-screen">
+        <img id="gamebutton" src="https://cdn-icons-png.flaticon.com/512/1828/1828166.png" height="200px" width="200px">
+    </section>
+    <section id="middleSection">
         <div id="extrabuttons">
-            <div id="settings">Settings</div>
-            <div id="stats">Statistics</div>
-            <div id="info">Information</div>
-            <div id="prestige">Operating System</div>
-        </div>
-        <div id="upgrades">
-            <div id="upgradessectiontitle">Upgrades</div>
-            <table id="upgradetable">
-                <tr>
-                    <td id="upgradeslot1"></td>
-                    <td id="upgradeslot2"></td>
-                </tr>
-                <tr>
-                    <td id="upgradeslot3"></td>
-                    <td id="upgradeslot4"></td>
-                </tr>
-                <tr>
-                    <td id="upgradeslot5"></td>
-                </tr>
-                <div id="clickupgrade">
-                    <div id="clickupgradeicon">2x</div>
-                    <div id="clickupgradename">New Plastic Mouse</div>
-                    <div id="clickupgradecost">250 clicks</div>
-                </div>
-                <div id="clickfarmupgrade">
-                    <img id="clickfarmupgradeicon" src="https://static.thenounproject.com/png/52015-200.png" height="50px" width="50px">
-                    <div id="clickfarmupgradetitle">Get the Hoe!</div>
-                    <div id="clickfarmupgradecost">32.5 Thousand clicks</div>
-                </div>
-                <div id="autoclickerupgrade">
-                    <img id="autoclickerupgradeicon" src="https://static.thenounproject.com/png/4387058-200.png" height="50px" width="50px">
-                    <div id="autoclickerupgradecost"></div>
-                    <div id="autoclickerupgradetitle">Autoclicker Glove</div>
-                </div>
-                <div id="clickbaitupgrade">
-                    <img id="clickbaitupgradeicon" src="./images/clickbaitupgrade.png" height="50px" width="50px">
-                    <div id="clickbaitupgradetitle">Better Bait</div>
-                    <div id="clickbaitupgradecost">12.5 Thousand clicks</div>
-                </div>
-            </table>
+            <div id="settingsButton">Settings</div>
+            <div id="infoButton">Information</div>
+            <div id="statsButton">Statistics</div>
+            <div id="prestigeButton">Operating System</div>
         </div>
         <div id="settingscontent">
             <div id="generaltitle">General</div>
             <div id="saveButton">Save</div>
             <div id="deletesaveButton">Delete Save</div>
-            <div id="exportsave">Export Save</div>
-            <div id="exportsavecontent">
-                <div id="exportsavecontentclose">X</div>
-                <textarea id="jsonexportdata">J</textarea>
+        </div>
+        <div id="extrastuff"></div>
+    </section>
+    <section id="rightSection">
+            <div id="autoclicker">
+                <img id="autoclickericon" src="https://cdn4.iconfinder.com/data/icons/pixel-web-part-1/512/pointer2-512.png" height="55px" width="55px">
+                <div id="autoclickertitle">Autoclicker</div>
+                <div id="autoclickercost"></div>
+                <div id="autoclickeramount"></div>
             </div>
-        </div>
-        <div id="statscontent">
-            <div id="generalstats">General Stats</div>
-            <table id="statstable">
-                <tr>
-                    <td>
-                        <div id="totalclicks"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="clickscurrently"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="clicksperclick"></div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="informationcontent">
-            <div id="aboutgametitle">About the Game</div>
-            <div id="aboutgame">This game is all about clicking stuff but for now you can only click a cursor but you wont click a cursor forever becuase some guy keeps adding stuff grow your clicking empire and click the living hell of the universe not just one universe Multiple universes but you wont get there or will you? Sacrificing Everything for just a few clicks</div>
-        </div>
-    </div>
-    <div id="shopsection" class="h-screen">
-        <div id="autoclicker">
-            <img id="autoclickerimg" src="https://cdn4.iconfinder.com/data/icons/pixel-web-part-1/512/pointer2-512.png" height="55px" width="55px">
-            <div id="autoclickertitle">Autoclicker</div>
-            <div id="autoclickeramount"></div>
-            <div id="autoclickercost"></div>
-        </div>
-        <div id="clickbait">
-            <img id="clickbaiticon" src="https://media.istockphoto.com/id/887602346/photo/fishing-hook-with-mouse-cursor-isolated.jpg?s=612x612&w=0&k=20&c=PW73PswoDk8Yq_g8BZx1vPMmdRDoUlFRIhycBtEnIIM=" height="55px" width="55px">
-            <div id="clickbaittitle">Click Baiter</div>
-            <div id="clickbaitamount"></div>
-            <div id="clickbaitcost"></div>
-        </div>
-        <div id="clickfarm">
-            <img id="clickfarmicon" src="https://t4.ftcdn.net/jpg/02/42/06/43/360_F_242064318_vuiZTMFZduikjlkEBcb2wSpmIQd67Ams.jpg" height="55px" width="55px">
-            <div id="clickfarmtitle">Click farm</div>
-            <div id="clickfarmcost"></div>
-            <div id="clickfarmamount"></div>
-        </div>
-    </div>
-    <script src="/js/etc.js"></script>
-    <script src="/js/math.js"></script>
+            <div id="clickbait">
+                <img id="clickbaiticon" src="https://media.istockphoto.com/id/887602346/photo/fishing-hook-with-mouse-cursor-isolated.jpg?s=612x612&w=0&k=20&c=PW73PswoDk8Yq_g8BZx1vPMmdRDoUlFRIhycBtEnIIM=" height="55px" width="55px">
+                <div id="clickbaitcost">1 Thousand clicks</div>
+                <div id="clickbaittitle">Click Baiter</div>
+                <div id="clickbaitamount">0</div>
+            </div>
+            <div id="clickfarm">
+                <img id="clickfarmicon" src="https://t4.ftcdn.net/jpg/02/42/06/43/360_F_242064318_vuiZTMFZduikjlkEBcb2wSpmIQd67Ams.jpg" height="55px" width="55px">
+                <div id="clickfarmtitle">Farm</div>
+                <div id="clickfarmcost">11.1 Thousand clicks</div>
+                <div id="clickfarmamount">0</div>
+            </div>
+    </section>
+<script src="src/ui.js"></script>
+<script src="src/script.js"></script>
 </body>
 </html>
