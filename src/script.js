@@ -103,11 +103,11 @@ function displayStuff() {
 
     document.title = formatNumber(game.clickButton.click) + " - Idle Click";
 
-    game.autoclicker.costhtml.innerHTML = formatNumber(game.autoclicker.cost) + " clicks";
+    game.autoclicker.costhtml.innerHTML = formatNumber(game.autoclicker.cost);
     game.autoclicker.amounthtml.innerHTML = game.autoclicker.amount;
-    game.clickbait.costhtml.innerHTML = formatNumber(game.clickbait.cost) + " clicks";
+    game.clickbait.costhtml.innerHTML = formatNumber(game.clickbait.cost);
     game.clickbait.amounthtml.innerHTML = game.clickbait.amount;
-    game.clickfarm.costhtml.innerHTML = formatNumber(game.clickfarm.cost) + " clicks";
+    game.clickfarm.costhtml.innerHTML = formatNumber(game.clickfarm.cost);
     game.clickfarm.amounthtml.innerHTML = game.clickfarm.amount;
 }
 
@@ -266,4 +266,15 @@ for (let i = 0; i < game.clickfarm.amount; i++) {
 
 game.clickfarm.html.addEventListener("click", () => {
     buyclickfarm();
+});
+
+let middleSection = document.getElementById('middleSection');
+
+window.addEventListener('resize', () => {
+    const windowWidth = window.innerWidth;
+    let middleSectionWidth;
+    const difference = 1363 - windowWidth;
+    const widthAdjustment = Math.floor(difference / 3) * 0.08;
+    middleSectionWidth = 43.5 - widthAdjustment;
+    middleSection.style.width = middleSectionWidth + '%';
 });
