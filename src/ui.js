@@ -6,7 +6,7 @@ let extrabuttons = {
 };
 
 let content = {
-    extra: document.getElementById('extrastuff'),
+    extra: document.getElementById('levelArea'),
 
     settings: {
         settingscontent: document.getElementById('settingscontent'),

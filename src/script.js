@@ -3,11 +3,22 @@ let display = {
     letter: document.getElementById('clickletter'),
 };
 
-let game = {
-    clickButton: {
-        click: 0,
-        clickRate: 1,
-        button: document.getElementById('gamebutton'),
+let Game = {
+    click: 0,
+    clickRate: 1,
+    button: document.getElementById('gamebutton'),
+
+    cursor: {
+        level: 0,
+        exp: 0,
+        expgain: 1,
+        exptotallvlup: 100,
+        get lefttolvlup() {
+            return this.exptotallvlup - this.exp;
+        },
+        lvlhtml: document.getElementById('cursorlvl'),
+        exphtml: document.getElementById('cursorexp'),
+        proggressbar: document.getElementById('cursorProggressBar'),
     },
 
     autoclicker: {
@@ -46,21 +57,28 @@ setInterval(() => {
     displayStuff();
 }, 1);
 
-const savedGame = JSON.parse(localStorage.getItem('game'));
+const savedGame = JSON.parse(localStorage.getItem('Game'));
 
 if (savedGame) {
-    game.clickButton.click = savedGame.clickButton.click;
-    game.clickButton.clickRate = savedGame.clickButton.clickRate;
-    game.autoclicker.cost = savedGame.autoclicker.cost;
-    game.autoclicker.amount = savedGame.autoclicker.amount;
-    game.clickbait.cost = savedGame.clickbait.cost;
-    game.clickbait.amount = savedGame.clickbait.amount;
-    game.clickfarm.cost = savedGame.clickfarm.cost;
-    game.clickfarm.amount = savedGame.clickfarm.amount;
+    Game.click = savedGame.click;
+    Game.clickRate = savedGame.clickRate;
+    Game.autoclicker.cost = savedGame.autoclicker.cost;
+    Game.autoclicker.amount = savedGame.autoclicker.amount;
+    Game.clickbait.cost = savedGame.clickbait.cost;
+    Game.clickbait.amount = savedGame.clickbait.amount;
+    Game.clickfarm.cost = savedGame.clickfarm.cost;
+    Game.clickfarm.amount = savedGame.clickfarm.amount;
+    Game.cursor.exp = savedGame.cursor.exp;
+    Game.cursor.expgain = savedGame.cursor.expgain;
+    Game.cursor.level = savedGame.cursor.level;
+    Game.cursor.exptotallvlup = savedGame.cursor.exptotallvlup;
+
+    const gainpercent = (Game.cursor.exp / Game.cursor.exptotallvlup) * 100;
+    Game.cursor.proggressbar.style.width = gainpercent + '%';
 }
 
 window.save = function save() {
-    localStorage.setItem('game', JSON.stringify(game));
+    localStorage.setItem('Game', JSON.stringify(Game));
 }
 
 function formatClick(number) {
@@ -74,11 +92,11 @@ function formatClick(number) {
 }
 
 function formatLetterForNumber() {
-    if (game.clickButton.click < 1e3) {
+    if (Game.click < 1e3) {
         return "";
-    } else if (game.clickButton.click >= 1e3 && game.clickButton.click < 1e6) {
+    } else if (Game.click >= 1e3 && Game.click < 1e6) {
         return " Thousand" + " clicks"
-    } else if (game.clickButton.click >= 1e6 && game.clickButton.click < 1e9) {
+    } else if (Game.click >= 1e6 && Game.click < 1e9) {
         return " Million" + " clicks"
     }
 };
@@ -89,32 +107,34 @@ function formatNumber(number) {
     } else if (number >= 1e3 && number < 1e6) {
         return (number / 1e3).toFixed(1) + " Thousand";
     } else if (number >= 1e6 && number < 1e9) {
-        return (number / 1e6).toFixed(1) + " Milloin"
-    }
-}
+        return (number / 1e6).toFixed(1) + " Million";
+    };
+};
 
 function displayStuff() {
-    display.number.innerHTML = formatClick(game.clickButton.click);
+    display.number.innerHTML = formatClick(Game.click);
     display.letter.innerHTML = formatLetterForNumber();
-    if (game.clickButton.click < 1e3) {
+    if (Game.click < 1e3) {
         display.number.innerHTML = "";
-        display.letter.innerHTML = game.clickButton.click + " clicks";
+        display.letter.innerHTML = Game.click + " clicks";
     }
 
-    document.title = formatNumber(game.clickButton.click) + " - Idle Click";
+    document.title = formatNumber(Game.click) + " - Idle Click";
 
-    game.autoclicker.costhtml.innerHTML = formatNumber(game.autoclicker.cost);
-    game.autoclicker.amounthtml.innerHTML = game.autoclicker.amount;
-    game.clickbait.costhtml.innerHTML = formatNumber(game.clickbait.cost);
-    game.clickbait.amounthtml.innerHTML = game.clickbait.amount;
-    game.clickfarm.costhtml.innerHTML = formatNumber(game.clickfarm.cost);
-    game.clickfarm.amounthtml.innerHTML = game.clickfarm.amount;
+    Game.autoclicker.costhtml.innerHTML = formatNumber(Game.autoclicker.cost) + ' clicks';
+    Game.autoclicker.amounthtml.innerHTML = Game.autoclicker.amount;
+    Game.clickbait.costhtml.innerHTML = formatNumber(Game.clickbait.cost) + ' clicks';
+    Game.clickbait.amounthtml.innerHTML = Game.clickbait.amount;
+    Game.clickfarm.costhtml.innerHTML = formatNumber(Game.clickfarm.cost) + ' clicks';
+    Game.clickfarm.amounthtml.innerHTML = Game.clickfarm.amount;
+    Game.cursor.lvlhtml.innerHTML = "Level: " + formatNumber(Game.cursor.level);
+    Game.cursor.exphtml.innerHTML = 'Exp: ' + formatNumber(Game.cursor.exp) + "/" + formatNumber(Game.cursor.exptotallvlup)
 }
 
 function popupClickRate() {
     let div = document.createElement("div");
     div.setAttribute('id', 'clickRatePopUp');
-    div.innerHTML = "+" + formatNumber(game.clickButton.clickRate);
+    div.innerHTML = "+" + formatNumber(Game.clickRate);
     div.style.position = 'absolute';
     let randomleft = Math.floor(Math.random() * 10) + 1;
     div.style.left = (event.clientX - randomleft) + 'px';
@@ -134,8 +154,8 @@ setTimeout(() => {
 }, 3000)
 }
 
-game.clickButton.button.addEventListener("click", () => {
-    game.clickButton.click += game.clickButton.clickRate;
+Game.button.addEventListener("click", () => {
+    Game.click += Game.clickRate;
     popupClickRate();
 })
 
@@ -144,13 +164,13 @@ let autoclickerIntervals = [];
 function autoclickerproducing(autoclickerIndex) {
     clearInterval(autoclickerIntervals[autoclickerIndex]);
     autoclickerIntervals[autoclickerIndex] = setInterval(() => {
-        game.clickButton.click += game.autoclicker.production;
+        Game.click += Game.autoclicker.production;
         displayStuff();
     }, 1000);
 }
 
 function autoclickerloop() {
-    for (let i = 0; i < game.autoclicker.amount; i++) {
+    for (let i = 0; i < Game.autoclicker.amount; i++) {
         setTimeout(() => {
             autoclickerproducing(i);
         }, 400 * i);
@@ -164,7 +184,7 @@ let intervaltime = 0;
 const intervaltimeDelay = 1000 - intervaltime;
 
 function buyautoclicker() {
-    if (game.clickButton.click >= game.autoclicker.cost) {
+    if (Game.click >= Game.autoclicker.cost) {
         clearInterval(interval);
         interval = null;
         intervaltime = 0;
@@ -175,17 +195,17 @@ function buyautoclicker() {
         intervaltime = 0;
         }
         }, 1);
-        game.clickButton.click -= game.autoclicker.cost;
-        game.autoclicker.amount += 1;
-        game.autoclicker.cost *= 1.15;
-        game.autoclicker.cost = Math.ceil(game.autoclicker.cost);
+        Gameclick -= Game.autoclicker.cost;
+        Game.autoclicker.amount += 1;
+        Game.autoclicker.cost *= 1.15;
+        Game.autoclicker.cost = Math.ceil(Game.autoclicker.cost);
         setTimeout(() => {
             autoclickerloop();
         }, intervaltimeDelay)
     }
 }
 
-game.autoclicker.html.addEventListener("click", () => {
+Game.autoclicker.html.addEventListener("click", () => {
     buyautoclicker();
 });
 
@@ -193,13 +213,13 @@ let clickbaitIntervals = [];
 
 function clickbaitproducing(clickbaitIndex) {
     clickbaitIntervals[clickbaitIndex] = setInterval(() => {
-        game.clickButton.click += game.clickbait.production;
+        Game.click += Game.clickbait.production;
         displayStuff();
     }, 200)
 }
 
 function buyclickbait() {
-    if (game.clickButton.click >= game.clickbait.cost) {
+    if (Game.click >= Game.clickbait.cost) {
         clearInterval(interval);
         interval = null;
         intervaltime = 0;
@@ -210,23 +230,23 @@ function buyclickbait() {
         intervaltime = 0;
         }
         }, 1);
-        game.clickButton.click -= game.clickbait.cost;
-        game.clickbait.amount += 1;
-        game.clickbait.cost *= 1.15;
-        game.clickbait.cost = Math.ceil(game.clickbait.cost);
+        Game.click -= Game.clickbait.cost;
+        Game.clickbait.amount += 1;
+        Game.clickbait.cost *= 1.15;
+        Game.clickbait.cost = Math.ceil(Game.clickbait.cost);
         setTimeout(() => {
             clickbaitproducing()
         }, intervaltimeDelay);
     }
 }
 
-for (let i = 0; i < game.clickbait.amount; i++) {
+for (let i = 0; i < Game.clickbait.amount; i++) {
     setTimeout(() => {
         clickbaitproducing();
     }, 400 * i)
 }
 
-game.clickbait.html.addEventListener("click", () => {
+Game.clickbait.html.addEventListener("click", () => {
     buyclickbait();
 });
 
@@ -234,12 +254,12 @@ let clickfarmIntervals = [];
 
 function clickfarmproducing(clickfarmIndex) {
     clickfarmIntervals[clickfarmIndex] = setInterval(() => {
-        game.clickButton.click += game.clickfarm.production;
+        Game.click += Game.clickfarm.production;
     }, 40)
 }
 
 function buyclickfarm() {
-    if (game.clickButton.click >= game.clickfarm.cost) {
+    if (Game.click >= Game.clickfarm.cost) {
         clearInterval(interval);
         interval = null;
         intervaltime = 0;
@@ -250,21 +270,21 @@ function buyclickfarm() {
         intervaltime = 0;
         }
         }, 1);
-        game.clickButton.click -= game.clickfarm.cost;
-        game.clickfarm.amount += 1;
-        game.clickfarm.cost *= 1.15;
-        game.clickfarm.cost = Math.ceil(game.clickfarm.cost);
+        Game.click -= Game.clickfarm.cost;
+        Game.clickfarm.amount += 1;
+        Game.clickfarm.cost *= 1.15;
+        Game.clickfarm.cost = Math.ceil(Game.clickfarm.cost);
         setTimeout(() => {
             clickfarmproducing();
         }, intervaltimeDelay)
     }
 }
 
-for (let i = 0; i < game.clickfarm.amount; i++) {
+for (let i = 0; i < Game.clickfarm.amount; i++) {
     clickfarmproducing();
 };
 
-game.clickfarm.html.addEventListener("click", () => {
+Game.clickfarm.html.addEventListener("click", () => {
     buyclickfarm();
 });
 
@@ -278,3 +298,14 @@ window.addEventListener('resize', () => {
     middleSectionWidth = 43.5 - widthAdjustment;
     middleSection.style.width = middleSectionWidth + '%';
 });
+
+Game.button.addEventListener("click", () => {
+    Game.cursor.exp += Game.cursor.expgain;
+    if (Game.cursor.exp >= Game.cursor.exptotallvlup) {
+        Game.cursor.exp = 0;
+        Game.cursor.exptotallvlup *= Math.ceil(Math.random() * 100) + 75
+        Game.cursor.level += 1;
+        Game.clickRate = Game.clickRate * 2;
+        Game.cursor.proggressbar.style.width = gainpercent + '%';
+    }
+})
