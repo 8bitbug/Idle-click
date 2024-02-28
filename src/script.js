@@ -72,9 +72,6 @@ if (savedGame) {
     Game.cursor.expgain = savedGame.cursor.expgain;
     Game.cursor.level = savedGame.cursor.level;
     Game.cursor.exptotallvlup = savedGame.cursor.exptotallvlup;
-
-    const gainpercent = (Game.cursor.exp / Game.cursor.exptotallvlup) * 100;
-    Game.cursor.proggressbar.style.width = gainpercent + '%';
 }
 
 window.save = function save() {
@@ -298,6 +295,9 @@ window.addEventListener('resize', () => {
     middleSectionWidth = 43.5 - widthAdjustment;
     middleSection.style.width = middleSectionWidth + '%';
 });
+
+const gainpercent = (Game.cursor.exp / Game.cursor.exptotallvlup) * 100;
+Game.cursor.proggressbar.style.width = gainpercent + '%';
 
 Game.button.addEventListener("click", () => {
     Game.cursor.exp += Game.cursor.expgain;
