@@ -5,11 +5,14 @@ let display = {
 
 let Game = {
     click: 0,
-    clickRate: 1,
+    clickRate: 1000,
     button: document.getElementById('gamebutton'),
 
+    clickpersecond: 0,
+    clickpersecondhtml: document.getElementById('clickpersecond'),
+
     cursor: {
-        level: 0,
+        level: 1,
         exp: 0,
         expgain: 1,
         exptotallvlup: 100,
@@ -25,6 +28,7 @@ let Game = {
         cost: 100,
         amount: 0,
         production: 1, //The autoclicker is gonna produce one click per second
+        persecond: 1,
         html: document.getElementById('autoclicker'),
         costhtml: document.getElementById('autoclickercost'),
         amounthtml: document.getElementById('autoclickeramount'),
@@ -34,6 +38,7 @@ let Game = {
         cost: 1010,
         amount: 0,
         production: 1, //The clickbaiter is gonna produce five clicks per second
+        persecond: 5,
         html: document.getElementById('clickbait'),
         amounthtml: document.getElementById('clickbaitamount'),
         costhtml: document.getElementById('clickbaitcost'),
@@ -43,6 +48,7 @@ let Game = {
         cost: 11010,
         amount: 0,
         production: 1, //The clickfarm is gonna produce 25 clicks per second
+        persecond: 25,
         html: document.getElementById('clickfarm'),
         amounthtml: document.getElementById('clickfarmamount'),
         costhtml: document.getElementById('clickfarmcost'),
@@ -72,6 +78,7 @@ if (savedGame) {
     Game.cursor.expgain = savedGame.cursor.expgain;
     Game.cursor.level = savedGame.cursor.level;
     Game.cursor.exptotallvlup = savedGame.cursor.exptotallvlup;
+    Game.clickpersecond = savedGame.clickpersecond;
 }
 
 window.save = function save() {
@@ -125,7 +132,9 @@ function displayStuff() {
     Game.clickfarm.costhtml.innerHTML = formatNumber(Game.clickfarm.cost) + ' clicks';
     Game.clickfarm.amounthtml.innerHTML = Game.clickfarm.amount;
     Game.cursor.lvlhtml.innerHTML = "Level: " + formatNumber(Game.cursor.level);
-    Game.cursor.exphtml.innerHTML = 'Exp: ' + formatNumber(Game.cursor.exp) + "/" + formatNumber(Game.cursor.exptotallvlup)
+    Game.cursor.exphtml.innerHTML = 'Exp: ' + formatNumber(Game.cursor.exp) + "/" + formatNumber(Game.cursor.exptotallvlup);
+
+    Game.clickpersecondhtml.innerHTML = 'Per Second: ' + formatNumber(Game.clickpersecond);
 }
 
 function popupClickRate() {
@@ -162,6 +171,7 @@ function autoclickerproducing(autoclickerIndex) {
     clearInterval(autoclickerIntervals[autoclickerIndex]);
     autoclickerIntervals[autoclickerIndex] = setInterval(() => {
         Game.click += Game.autoclicker.production;
+        Game.clickpersecond += Game.autoclicker.persecond; // Update click per second count
         displayStuff();
     }, 1000);
 }
@@ -187,20 +197,22 @@ function buyautoclicker() {
         intervaltime = 0;
         intervaltime = 0;
         interval = setInterval(() => {
-        intervaltime = intervaltime + 1;
-        if (intervaltime >= 1000) {
-        intervaltime = 0;
-        }
+            intervaltime = intervaltime + 1;
+            if (intervaltime >= 1000) {
+                intervaltime = 0;
+            }
         }, 1);
-        Gameclick -= Game.autoclicker.cost;
+        Game.click -= Game.autoclicker.cost;
         Game.autoclicker.amount += 1;
         Game.autoclicker.cost *= 1.15;
         Game.autoclicker.cost = Math.ceil(Game.autoclicker.cost);
+        Game.clickpersecond += Game.autoclicker.persecond; // Increment click per second count
         setTimeout(() => {
             autoclickerloop();
         }, intervaltimeDelay)
     }
 }
+
 
 Game.autoclicker.html.addEventListener("click", () => {
     buyautoclicker();
@@ -231,6 +243,7 @@ function buyclickbait() {
         Game.clickbait.amount += 1;
         Game.clickbait.cost *= 1.15;
         Game.clickbait.cost = Math.ceil(Game.clickbait.cost);
+        Game.clickpersecond += Game.clickbait.persecond;
         setTimeout(() => {
             clickbaitproducing()
         }, intervaltimeDelay);
@@ -271,6 +284,7 @@ function buyclickfarm() {
         Game.clickfarm.amount += 1;
         Game.clickfarm.cost *= 1.15;
         Game.clickfarm.cost = Math.ceil(Game.clickfarm.cost);
+        Game.clickpersecond += Game.clickfarm.persecond;
         setTimeout(() => {
             clickfarmproducing();
         }, intervaltimeDelay)
@@ -301,13 +315,24 @@ Game.cursor.proggressbar.style.width = gainpercent + '%';
 
 Game.button.addEventListener("click", () => {
     Game.cursor.exp += Game.cursor.expgain;
+    const gainpercent = (Game.cursor.exp / Game.cursor.exptotallvlup) * 100;
     Game.cursor.proggressbar.style.width = gainpercent + '%';
     if (Game.cursor.exp >= Game.cursor.exptotallvlup) {
         Game.cursor.exp = 0;
-        const percentageIncrease = Math.random() * (1 - 0.75) + 0.75;
-        Game.cursor.exptotallvlup *= percentageIncrease;
+        let percentincrease = Math.random() * (5 - 3) + 3;
+        Game.cursor.exptotallvlup *= percentincrease;
+        Game.cursor.exptotallvlup = Math.floor(Game.cursor.exptotallvlup);
         Game.cursor.level += 1;
         Game.clickRate = Game.clickRate * 2;
-        Game.cursor.proggressbar.style.width = gainpercent + '%';
     }
+})
+
+Game.button.addEventListener("mouseover", () => {
+    Game.button.style.height = '210px';
+    Game.button.style.width = '210px';
+})
+
+Game.button.addEventListener("mouseout", () => {
+    Game.button.style.height = '200px';
+    Game.button.style.width = '200px';
 })
