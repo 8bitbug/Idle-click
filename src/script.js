@@ -301,6 +301,7 @@ Game.cursor.proggressbar.style.width = gainpercent + '%';
 
 Game.button.addEventListener("click", () => {
     Game.cursor.exp += Game.cursor.expgain;
+    Game.cursor.proggressbar.style.width = gainpercent + '%';
     if (Game.cursor.exp >= Game.cursor.exptotallvlup) {
         Game.cursor.exp = 0;
         const percentageIncrease = Math.random() * (1 - 0.75) + 0.75;
