@@ -5,7 +5,7 @@ let display = {
 
 let Game = {
     click: 0,
-    clickRate: 1000,
+    clickRate: 1,
     button: document.getElementById('gamebutton'),
 
     clickpersecond: 0,
