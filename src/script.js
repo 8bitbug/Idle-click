@@ -171,7 +171,6 @@ function autoclickerproducing(autoclickerIndex) {
     clearInterval(autoclickerIntervals[autoclickerIndex]);
     autoclickerIntervals[autoclickerIndex] = setInterval(() => {
         Game.click += Game.autoclicker.production;
-        Game.clickpersecond += Game.autoclicker.persecond; // Update click per second count
         displayStuff();
     }, 1000);
 }
