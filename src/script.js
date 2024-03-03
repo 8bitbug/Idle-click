@@ -5,7 +5,7 @@ let display = {
 
 let Game = {
     click: 0,
-    clickRate: 1,
+    clickRate: 1000,
     button: document.getElementById('gamebutton'),
 
     clickpersecond: 0,
@@ -22,6 +22,19 @@ let Game = {
         lvlhtml: document.getElementById('cursorlvl'),
         exphtml: document.getElementById('cursorexp'),
         proggressbar: document.getElementById('cursorProggressBar'),
+    },
+
+    autoclickerlvl: {
+        level: 1,
+        exp: 0,
+        expgain: 1,
+        exptotallvlup: 1000,
+        get lefttolvlup() {
+            return this.exptotallvlup - this.exp;
+        },
+        lvlhtml: document.getElementById('autoclickerlvldis'),
+        exphtml: document.getElementById('autoclickerexp'),
+        proggressbar: document.getElementById('autoclickerProggressBar'),
     },
 
     autoclicker: {
@@ -61,6 +74,7 @@ setInterval(() => {
 
 setInterval(() => {
     displayStuff();
+    autoclickerLVLup();
 }, 1);
 
 const savedGame = JSON.parse(localStorage.getItem('Game'));
@@ -79,6 +93,10 @@ if (savedGame) {
     Game.cursor.level = savedGame.cursor.level;
     Game.cursor.exptotallvlup = savedGame.cursor.exptotallvlup;
     Game.clickpersecond = savedGame.clickpersecond;
+    Game.autoclickerlvl.exp = savedGame.autoclickerlvl.exp;
+    Game.autoclickerlvl.exptotallvlup = savedGame.autoclickerlvl.exptotallvlup;
+    Game.autoclickerlvl.level = savedGame.autoclickerlvl.level;
+    Game.autoclickerlvl.expgain = savedGame.autoclickerlvl.expgain;
 }
 
 window.save = function save() {
@@ -133,6 +151,8 @@ function displayStuff() {
     Game.clickfarm.amounthtml.innerHTML = Game.clickfarm.amount;
     Game.cursor.lvlhtml.innerHTML = "Level: " + formatNumber(Game.cursor.level);
     Game.cursor.exphtml.innerHTML = 'Exp: ' + formatNumber(Game.cursor.exp) + "/" + formatNumber(Game.cursor.exptotallvlup);
+    Game.autoclickerlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.autoclickerlvl.level);
+    Game.autoclickerlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.autoclickerlvl.exp) + "/" + formatNumber(Game.autoclickerlvl.exptotallvlup)
 
     Game.clickpersecondhtml.innerHTML = 'Per Second: ' + formatNumber(Game.clickpersecond);
 }
@@ -171,6 +191,7 @@ function autoclickerproducing(autoclickerIndex) {
     clearInterval(autoclickerIntervals[autoclickerIndex]);
     autoclickerIntervals[autoclickerIndex] = setInterval(() => {
         Game.click += Game.autoclicker.production;
+        Game.autoclickerlvl.exp += Game.autoclickerlvl.expgain;
         displayStuff();
     }, 1000);
 }
@@ -335,3 +356,18 @@ Game.button.addEventListener("mouseout", () => {
     Game.button.style.height = '200px';
     Game.button.style.width = '200px';
 })
+
+function autoclickerLVLup() {
+    const gainpercent = (Game.autoclickerlvl.exp / Game.autoclickerlvl.exptotallvlup) * 100;
+    Game.autoclickerlvl.proggressbar.style.width = gainpercent + '%';
+    if (Game.autoclickerlvl.exp >= Game.autoclickerlvl.exptotallvlup) {
+        Game.autoclickerlvl.exp = 0;
+        let percentincrease = Math.random() * (5 - 3) + 3;
+        Game.autoclickerlvl.exptotallvlup *= percentincrease;
+        Game.autoclickerlvl.exptotallvlup = Math.floor(Game.autoclickerlvl.exptotallvlup);
+        Game.autoclickerlvl.level += 1;
+        Game.autoclicker.production *= 2;
+        Game.autoclicker.persecond *= 2; 
+        Game.clickpersecond = Game.autoclicker.amount * Game.autoclicker.persecond;
+    }
+}
