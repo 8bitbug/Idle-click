@@ -4,7 +4,7 @@ let display = {
 };
 
 let Game = {
-    click: 0,
+    click: 100000,
     clickRate: 1,
     button: document.getElementById('gamebutton'),
 
@@ -35,6 +35,32 @@ let Game = {
         lvlhtml: document.getElementById('autoclickerlvldis'),
         exphtml: document.getElementById('autoclickerexp'),
         proggressbar: document.getElementById('autoclickerProggressBar'),
+    },
+
+    clickbaitlvl: {
+        level: 1,
+        exp: 0,
+        expgain: 1,
+        exptotallvlup: 5555,
+        get lefttolvlup() {
+            return this.exptotallvlup - this.exp
+        },
+        lvlhtml: document.getElementById('clickbaitlvldis'),
+        exphtml: document.getElementById('clickbaitexpdis'),
+        proggressbar: document.getElementById('clickbaitProggressBar'),
+    },
+
+    clickfarmlvl: {
+        level: 1,
+        exp: 0,
+        expgain: 1,
+        exptotallvlup: 27311,
+        get lefttolvlup() {
+            return this.exptotallvlup - this.exp;
+        },
+        lvlhtml: document.getElementById('clickfarmlvldis'),
+        exphtml: document.getElementById('clickfarmexpdis'),
+        proggressbar: document.getElementById('clickfarmProggressBar'),
     },
 
     autoclicker: {
@@ -75,6 +101,8 @@ setInterval(() => {
 setInterval(() => {
     displayStuff();
     autoclickerLVLup();
+    clickbaitLVLup();
+    clickfarmLVLup();
 }, 1);
 
 const savedGame = JSON.parse(localStorage.getItem('Game'));
@@ -97,6 +125,14 @@ if (savedGame) {
     Game.autoclickerlvl.exptotallvlup = savedGame.autoclickerlvl.exptotallvlup;
     Game.autoclickerlvl.level = savedGame.autoclickerlvl.level;
     Game.autoclickerlvl.expgain = savedGame.autoclickerlvl.expgain;
+    Game.clickbaitlvl.exp = savedGame.clickbaitlvl.exp;
+    Game.clickbaitlvl.exptotallvlup = savedGame.clickbaitlvl.exptotallvlup;
+    Game.clickbaitlvl.level = savedGame.clickbaitlvl.level;
+    Game.clickbaitlvl.expgain = savedGame.clickbaitlvl.expgain;
+    Game.clickfarmlvl.exp = savedGame.clickfarmlvl.exp;
+    Game.clickfarmlvl.exptotallvlup = savedGame.clickfarmlvl.exptotallvlup;
+    Game.clickfarmlvl.level = savedGame.clickfarmlvl.level;
+    Game.clickfarmlvl.expgain = savedGame.clickfarmlvl.expgain;
 }
 
 window.save = function save() {
@@ -152,7 +188,11 @@ function displayStuff() {
     Game.cursor.lvlhtml.innerHTML = "Level: " + formatNumber(Game.cursor.level);
     Game.cursor.exphtml.innerHTML = 'Exp: ' + formatNumber(Game.cursor.exp) + "/" + formatNumber(Game.cursor.exptotallvlup);
     Game.autoclickerlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.autoclickerlvl.level);
-    Game.autoclickerlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.autoclickerlvl.exp) + "/" + formatNumber(Game.autoclickerlvl.exptotallvlup)
+    Game.autoclickerlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.autoclickerlvl.exp) + "/" + formatNumber(Game.autoclickerlvl.exptotallvlup);
+    Game.clickbaitlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.clickbaitlvl.level)
+    Game.clickbaitlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.clickbaitlvl.exp) + "/" + formatNumber(Game.clickbaitlvl.exptotallvlup);
+    Game.clickfarmlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.clickfarmlvl.level);
+    Game.clickfarmlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.clickfarmlvl.exp) + "/" + formatNumber(Game.clickfarmlvl.exptotallvlup);
 
     Game.clickpersecondhtml.innerHTML = 'Per Second: ' + formatNumber(Game.clickpersecond);
 }
@@ -243,6 +283,7 @@ let clickbaitIntervals = [];
 function clickbaitproducing(clickbaitIndex) {
     clickbaitIntervals[clickbaitIndex] = setInterval(() => {
         Game.click += Game.clickbait.production;
+        Game.clickbaitlvl.exp += Game.clickbaitlvl.expgain;
         displayStuff();
     }, 200)
 }
@@ -251,7 +292,6 @@ function buyclickbait() {
     if (Game.click >= Game.clickbait.cost) {
         clearInterval(interval);
         interval = null;
-        intervaltime = 0;
         intervaltime = 0;
         interval = setInterval(() => {
         intervaltime = intervaltime + 1;
@@ -285,6 +325,7 @@ let clickfarmIntervals = [];
 function clickfarmproducing(clickfarmIndex) {
     clickfarmIntervals[clickfarmIndex] = setInterval(() => {
         Game.click += Game.clickfarm.production;
+        Game.clickfarmlvl.exp += Game.clickfarmlvl.expgain;
     }, 40)
 }
 
@@ -292,7 +333,6 @@ function buyclickfarm() {
     if (Game.click >= Game.clickfarm.cost) {
         clearInterval(interval);
         interval = null;
-        intervaltime = 0;
         intervaltime = 0;
         interval = setInterval(() => {
         intervaltime = intervaltime + 1;
@@ -369,5 +409,35 @@ function autoclickerLVLup() {
         Game.autoclicker.production *= 2;
         Game.autoclicker.persecond *= 2; 
         Game.clickpersecond = Game.autoclicker.amount * Game.autoclicker.persecond;
+    }
+}
+
+function clickbaitLVLup() {
+    const gainpercent = (Game.clickbaitlvl.exp / Game.clickbaitlvl.exptotallvlup) * 100;
+    Game.clickbaitlvl.proggressbar.style.width = gainpercent + '%';
+    if (Game.clickbaitlvl.exp >= Game.clickbaitlvl.exptotallvlup) {
+        Game.clickbaitlvl.exp = 0;
+        let percentincrease = Math.random() * (5 - 3) + 3;
+        Game.clickbaitlvl.exptotallvlup *= percentincrease;
+        Game.clickbaitlvl.exptotallvlup = Math.floor(Game.clickbaitlvl.exptotallvlup);
+        Game.clickbaitlvl.level += 1;
+        Game.clickbait.production *= 2;
+        Game.clickbait.persecond *= 2; 
+        Game.clickpersecond = Game.clickbait.amount * Game.clickbait.persecond;
+    }
+}
+
+function clickfarmLVLup() {
+    const gainpercent = (Game.clickfarmlvl.exp / Game.clickfarmlvl.exptotallvlup) * 100;
+    Game.clickfarmlvl.proggressbar.style.width = gainpercent + '%';
+    if (Game.clickfarmlvl.exp >= Game.clickfarmlvl.exptotallvlup) {
+        Game.clickfarmlvl.exp = 0;
+        let percentincrease = Math.random() * (5 - 3) + 3;
+        Game.clickfarmlvl.exptotallvlup *= percentincrease;
+        Game.clickfarmlvl.exptotallvlup = Math.floor(Game.clickfarmlvl.exptotallvlup);
+        Game.clickfarmlvl.level += 1;
+        Game.clickfarm.production *= 2;
+        Game.clickfarm.persecond *= 2; 
+        Game.clickpersecond = Game.clickfarm.amount * Game.clickfarm.persecond;
     }
 }

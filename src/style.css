@@ -321,8 +321,7 @@ body {
 #cursorIcon {
     position: absolute;
     left: 9px;
-    top: 50%;
-    transform: translateY(-115%);
+    top: 15px;
 }
 
 #cursorProggressBar {
@@ -344,6 +343,7 @@ body {
 #cursorlvl {
     font-family: sans-serif;
     font-size: 19px;
+    user-select: none;
     position: absolute;
     left: 110px;
     top: 10px;
@@ -352,6 +352,7 @@ body {
 #cursorexp {
     font-family: sans-serif;
     font-size: 15px;
+    user-select: none;
     position: absolute;
     left: 110px;
     top: 45px;
@@ -359,6 +360,7 @@ body {
 
 #clickpersecond {
     font-family: sans-serif;
+    user-select: none;
     position: absolute;
     top: 162px;
     left: 50%;
@@ -374,13 +376,13 @@ body {
 #autoclickerlvlicon {
     position: absolute;
     left: 9px;
-    top: 55%;
-    transform: translateY(-1%);
+    top: 114px;
 }
 
 #autoclickerlvldis {
     font-family: sans-serif;
     font-size: 19px;
+    user-select: none;
     position: absolute;
     left: 110px;
     top: 110px;
@@ -389,6 +391,7 @@ body {
 #autoclickerexp {
     font-family: sans-serif;
     font-size: 15px;
+    user-select: none;
     position: absolute;
     left: 110px;
     top: 150px;
@@ -408,4 +411,97 @@ body {
     right: 10px;
     top: 171px;
     background-color: lightgray;
+}
+
+#clickbaitLvL {
+    height: 100px;
+    width: 100%;
+    border-bottom: black solid 5px;
+}
+
+#clickbaitproggressbarcontainer {
+    width: 81%;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 276px;
+    background-color: lightgray;
+}
+
+#clickbaitProggressBar {
+    height: 100%;
+    width: 0%;
+    background-color: black;
+    transition: width 0.5s;
+}
+
+#clickbaitlvldis {
+    font-family: sans-serif;
+    font-size: 19px;
+    user-select: none;
+    position: absolute;
+    left: 110px;
+    top: 215px;
+}
+
+#clickbaitlvlicon {
+    font-size: 60px;
+    position: absolute;
+    left: 9px;
+    top: 225px;
+}
+
+#clickbaitexpdis {
+    font-family: sans-serif;
+    font-size: 15px;
+    user-select: none;
+    position: absolute;
+    left: 110px;
+    top: 255px;
+}
+
+#clickfarmLvL {
+    height: 100px;
+    width: 100%;
+    border-bottom: black solid 5px;
+}
+
+#clickfarmlvlicon {
+    position: absolute;
+    left: 9px;
+    top: 325px;
+}
+
+#clickfarmlvldis {
+    font-family: sans-serif;
+    font-size: 19px;
+    user-select: none;
+    position: absolute;
+    left: 110px;
+    top: 320px;
+}
+
+#clickfarmexpdis {
+    font-family: sans-serif;
+    font-size: 15px;
+    user-select: none;
+    position: absolute;
+    left: 110px;
+    top: 360px;
+}
+
+#clickfarmproggressbarcontainer {
+    width: 81%;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 380px;
+    background-color: lightgray;
+}
+
+#clickfarmProggressBar {
+    height: 100%;
+    width: 0%;
+    background-color: black;
+    transition: width 0.5s;
 }
