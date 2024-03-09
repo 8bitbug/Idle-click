@@ -4,7 +4,7 @@ let display = {
 };
 
 let Game = {
-    click: 100000,
+    click: 0,
     clickRate: 1,
     button: document.getElementById('gamebutton'),
 
