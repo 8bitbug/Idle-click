@@ -37,3 +37,21 @@ content.settings.deletesaveButton.addEventListener("click", () => {
     localStorage.clear();
     location.reload();
 })
+
+extrabuttons.info.addEventListener('click', () => {
+    alert("Not yet implemented");
+});
+
+extrabuttons.prestige.addEventListener('click', () => {
+    alert("Not yet implemented");
+});
+
+extrabuttons.stats.addEventListener('click', () => {
+    alert("Not yet implemented");
+});
+
+if (screen.height < 1000 && screen.width < 1000) {
+    document.body.innerHTML = '';
+    document.write('Looks like you are on mobile and this game is not made for mobile')
+    document.write(' and im not planning to make it for mobile any time soon')
+}
