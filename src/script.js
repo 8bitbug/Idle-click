@@ -63,6 +63,19 @@ let Game = {
         proggressbar: document.getElementById('clickfarmProggressBar'),
     },
 
+    computerlvl: {
+        level: 1,
+        exp: 0,
+        expgain: 1,
+        exptotallvlup: 101010,
+        get lefttolvlup() {
+            return this.exptotallvlup - this.exp;
+        },
+        lvlhtml: document.getElementById('computerlvldis'),
+        exphtml: document.getElementById('computerexpdis'),
+        proggressbar: document.getElementById('computerProggressBar'),
+    },
+
     autoclicker: {
         cost: 100,
         amount: 0,
@@ -77,7 +90,7 @@ let Game = {
         cost: 1010,
         amount: 0,
         production: 1, //The clickbaiter is gonna produce five clicks per second
-        persecond: 5,
+        persecond: 10,
         html: document.getElementById('clickbait'),
         amounthtml: document.getElementById('clickbaitamount'),
         costhtml: document.getElementById('clickbaitcost'),
@@ -87,10 +100,20 @@ let Game = {
         cost: 11010,
         amount: 0,
         production: 1, //The clickfarm is gonna produce 25 clicks per second
-        persecond: 25,
+        persecond: 100,
         html: document.getElementById('clickfarm'),
         amounthtml: document.getElementById('clickfarmamount'),
         costhtml: document.getElementById('clickfarmcost'),
+    },
+
+    clickcomputer: {
+        cost: 101101,
+        amount: 0,
+        production: 10, //The computer is gonna produce 1000 clicks per second
+        persecond: 1000,
+        html: document.getElementById('clickcomputer'),
+        amounthtml: document.getElementById('clickcomputeramount'),
+        costhtml: document.getElementById('clickcomputercost'),
     }
 };
 
@@ -103,6 +126,7 @@ setInterval(() => {
     autoclickerLVLup();
     clickbaitLVLup();
     clickfarmLVLup();
+    clickcomputerLVLup();
 }, 1);
 
 const savedGame = JSON.parse(localStorage.getItem('Game'));
@@ -116,6 +140,9 @@ if (savedGame) {
     Game.clickbait.cost = savedGame.clickbait.cost;
     Game.clickbait.amount = savedGame.clickbait.amount;
     Game.clickbait.production = savedGame.clickbait.production;
+    Game.clickcomputer.cost = savedGame.clickcomputer.cost;
+    Game.clickcomputer.amount = savedGame.clickcomputer.amount;
+    Game.clickcomputer.production = savedGame.clickcomputer.production;
     Game.clickfarm.cost = savedGame.clickfarm.cost;
     Game.clickfarm.amount = savedGame.clickfarm.amount;
     Game.clickfarm.production = savedGame.clickfarm.production;
@@ -136,9 +163,14 @@ if (savedGame) {
     Game.clickfarmlvl.exptotallvlup = savedGame.clickfarmlvl.exptotallvlup;
     Game.clickfarmlvl.level = savedGame.clickfarmlvl.level;
     Game.clickfarmlvl.expgain = savedGame.clickfarmlvl.expgain;
+    Game.computerlvl.exp = savedGame.computerlvl.exp;
+    Game.computerlvl.exptotallvlup = savedGame.computerlvl.exptotallvlup;
+    Game.computerlvl.level = savedGame.computerlvl.level;
+    Game.computerlvl.expgain = savedGame.computerlvl.expgain;
     Game.autoclicker.persecond = savedGame.autoclicker.persecond;
     Game.clickbait.persecond = savedGame.clickbait.persecond;
     Game.clickfarm.persecond = savedGame.clickfarm.persecond;
+    Game.clickcomputer.persecond = savedGame.clickcomputer.persecond;
 }
 
 window.save = function save() {
@@ -152,6 +184,12 @@ function formatClick(number) {
         return (number / 1e3).toFixed(1);
     } else if (number >= 1e6 && number < 1e9) {
         return (number / 1e6).toFixed(1);
+    } else if (number >= 1e9 && number < 1e12) {
+        return (number / 1e9).toFixed(1)
+    } else if (number >= 1e12 && number < 1e15) {
+        return (number / 1e12).toFixed(1)
+    } else if (number >= 1e15 && number < 1e18) {
+        return (number / 1e15).toFixed(1)
     }
 }
 
@@ -162,6 +200,12 @@ function formatLetterForNumber() {
         return " Thousand" + " clicks"
     } else if (Game.click >= 1e6 && Game.click < 1e9) {
         return " Million" + " clicks"
+    } else if (Game.click >= 1e9 && Game.click < 1e12) {
+        return " Billion" + " clicks"
+    } else if (Game.click >= 1e12 && Game.click < 1e15) {
+        return " Trillion" + " clicks"
+    } else if (Game.click >= 1e15 && Game.click < 1e18) {
+        return " Quadrillion" + " clicks"
     }
 };
 
@@ -172,6 +216,12 @@ function formatNumber(number) {
         return (number / 1e3).toFixed(1) + " Thousand";
     } else if (number >= 1e6 && number < 1e9) {
         return (number / 1e6).toFixed(1) + " Million";
+    } else if (number >= 1e9 && number < 1e12) {
+        return (number / 1e9).toFixed(1) + " Billion";
+    } else if (number >= 1e12 && number < 1e15) {
+        return (number / 1e12).toFixed(1) + " Trillion";
+    } else if (number >= 1e15 && number < 1e18) {
+        return (number / 1e15).toFixed(1) + " Quadrillion";
     };
 };
 
@@ -188,6 +238,7 @@ function displayStuff() {
     document.getElementById('persecondautoclicker').innerHTML = 'Per Second: ' + formatNumber(Game.autoclicker.persecond) + ' clicks';
     document.getElementById('persecondclickbait').innerHTML = 'Per Second: ' + formatNumber(Game.clickbait.persecond) + ' clicks';
     document.getElementById('persecondclickfarm').innerHTML = 'Per Second: ' + formatNumber(Game.clickfarm.persecond) + ' clicks';
+    document.getElementById('persecondclickcomputer').innerHTML = 'Per Second: ' + formatNumber(Game.clickcomputer.persecond) + ' clicks';
 
     Game.autoclicker.costhtml.innerHTML = formatNumber(Game.autoclicker.cost) + ' clicks';
     Game.autoclicker.amounthtml.innerHTML = Game.autoclicker.amount;
@@ -195,6 +246,8 @@ function displayStuff() {
     Game.clickbait.amounthtml.innerHTML = Game.clickbait.amount;
     Game.clickfarm.costhtml.innerHTML = formatNumber(Game.clickfarm.cost) + ' clicks';
     Game.clickfarm.amounthtml.innerHTML = Game.clickfarm.amount;
+    Game.clickcomputer.costhtml.innerHTML = formatNumber(Game.clickcomputer.cost) + ' clicks';
+    Game.clickcomputer.amounthtml.innerHTML = Game.clickcomputer.amount
     Game.cursor.lvlhtml.innerHTML = "Level: " + formatNumber(Game.cursor.level);
     Game.cursor.exphtml.innerHTML = 'Exp: ' + formatNumber(Game.cursor.exp) + "/" + formatNumber(Game.cursor.exptotallvlup);
     Game.autoclickerlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.autoclickerlvl.level);
@@ -203,15 +256,20 @@ function displayStuff() {
     Game.clickbaitlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.clickbaitlvl.exp) + "/" + formatNumber(Game.clickbaitlvl.exptotallvlup);
     Game.clickfarmlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.clickfarmlvl.level);
     Game.clickfarmlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.clickfarmlvl.exp) + "/" + formatNumber(Game.clickfarmlvl.exptotallvlup);
+    Game.computerlvl.lvlhtml.innerHTML = "Level: " + formatNumber(Game.computerlvl.level);
+    Game.computerlvl.exphtml.innerHTML = "Exp: " + formatNumber(Game.computerlvl.exp) + "/" + formatNumber(Game.computerlvl.exptotallvlup);
 
     Game.clickpersecondhtml.innerHTML = 'Per Second: ' + formatNumber(Game.clickpersecond);
 }
+
+let popupColor = 'black';
 
 function popupClickRate() {
     let div = document.createElement("div");
     div.setAttribute('id', 'clickRatePopUp');
     div.innerHTML = "+" + formatNumber(Game.clickRate);
     div.style.position = 'absolute';
+    div.style.color = popupColor;
     let randomleft = Math.floor(Math.random() * 10) + 1;
     div.style.left = (event.clientX - randomleft) + 'px';
     div.style.top = (event.clientY - 25) + 'px';
@@ -276,7 +334,7 @@ function buyautoclicker() {
         Game.autoclicker.amount += 1;
         Game.autoclicker.cost *= 1.15;
         Game.autoclicker.cost = Math.ceil(Game.autoclicker.cost);
-        Game.clickpersecond += Game.autoclicker.persecond; // Increment click per second count
+        Game.clickpersecond += Game.autoclicker.persecond;
         setTimeout(() => {
             autoclickerloop();
         }, intervaltimeDelay)
@@ -295,7 +353,7 @@ function clickbaitproducing(clickbaitIndex) {
         Game.click += Game.clickbait.production;
         Game.clickbaitlvl.exp += Game.clickbaitlvl.expgain;
         displayStuff();
-    }, 200)
+    }, 100)
 }
 
 function buyclickbait() {
@@ -336,7 +394,7 @@ function clickfarmproducing(clickfarmIndex) {
     clickfarmIntervals[clickfarmIndex] = setInterval(() => {
         Game.click += Game.clickfarm.production;
         Game.clickfarmlvl.exp += Game.clickfarmlvl.expgain;
-    }, 40)
+    }, 10)
 }
 
 function buyclickfarm() {
@@ -397,7 +455,7 @@ Game.button.addEventListener("click", () => {
     }
 })
 
-let cursorwidth = 200;
+let cursorwidth = 210;
 
 Game.button.addEventListener("mouseover", () => {
     cursorwidth += 10;
@@ -456,6 +514,21 @@ function clickfarmLVLup() {
     }
 }
 
+function clickcomputerLVLup() {
+    const gainpercent = (Game.computerlvl.exp / Game.computerlvl.exptotallvlup) * 100;
+    Game.computerlvl.proggressbar.style.width = gainpercent + '%';
+    if (Game.computerlvl.exp >= Game.computerlvl.exptotallvlup) {
+        Game.computerlvl.exp = 0;
+        let percentincrease = Math.random() * (5 - 3) + 3;
+        Game.computerlvl.exptotallvlup *= percentincrease;
+        Game.computerlvl.exptotallvlup = Math.floor(Game.computerlvl.exptotallvlup);
+        Game.computerlvl.level += 1;
+        Game.clickcomputer.production *= 2;
+        Game.clickcomputer.persecond *= 2; 
+        Game.clickpersecond = Game.clickcomputer.amount * Game.clickcomputer.persecond;
+    }
+}
+
 Game.autoclicker.html.addEventListener('mousemove', function(event) {
     let mouseY = event.pageY;
     document.getElementById('autoclickerabout').style.top = mouseY + 'px';
@@ -486,6 +559,16 @@ Game.clickfarm.html.addEventListener('mouseleave', function() {
     document.getElementById('clickfarmabout').style.display = 'none'
 })
 
+Game.clickcomputer.html.addEventListener('mousemove', function(event) {
+    let mouseY = event.pageY;
+    document.getElementById('clickcomputerabout').style.top = mouseY + 'px';
+    document.getElementById('clickcomputerabout').style.display = 'block';
+})
+
+Game.clickcomputer.html.addEventListener('mouseleave', function() {
+    document.getElementById('clickcomputerabout').style.display = 'none';
+})
+
 document.getElementById('levelinfo').addEventListener('click', () => {
     let levelaboutElement = document.getElementById('levelabout');
 
@@ -496,59 +579,44 @@ document.getElementById('levelinfo').addEventListener('click', () => {
     }
 })
 
-function invertColors() {
-    var allElements = document.querySelectorAll('*');
+let clickcomputerIntervals = [];
 
-    for (var i = 0; i < allElements.length; i++) {
-        var element = allElements[i];
-        var bgColor = getComputedStyle(element).backgroundColor;
-        var color = getComputedStyle(element).color;
-
-        // Invert background color
-        if (bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
-            element.style.backgroundColor = invertColor(bgColor);
-        }
-
-        // Invert text color
-        element.style.color = invertColor(color);
-
-        // Invert border color
-        var borderColor = getComputedStyle(element).borderColor;
-        if (borderColor !== 'rgba(0, 0, 0, 0)' && borderColor !== 'transparent') {
-            element.style.borderColor = invertColor(borderColor);
-        }
-    }
+function clickcomputerproducing(clickcomputerIndex) {
+    clickcomputerIntervals[clickcomputerIndex] = setInterval(() => {
+        Game.click += Game.clickcomputer.production;
+        Game.computerlvl.exp += Game.computerlvl.expgain
+    }, 1)
 }
 
-function invertColor(color) {
-    // Remove spaces from start and end of color string
-    color = color.trim();
 
-    // Check if the color is in hex format
-    if (color.match(/^#[0-9A-Fa-f]{6}$/)) {
-        // Invert hex color
-        color = (Number(`0x${color.slice(1)}`) ^ 0xFFFFFF).toString(16);
-        color = '#' + ('000000' + color).slice(-6);
-    } else if (color.startsWith('rgb')) {
-        // Invert rgb/rgba color
-        var parts = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
-        if (parts) {
-            color = 'rgb(' + (255 - parseInt(parts[1], 10)) + ',' + (255 - parseInt(parts[2], 10)) + ',' + (255 - parseInt(parts[3], 10)) + ')';
-        }
-    }
-
-    return color;
+function buyclickcomputer() {
+    if (Game.click >= Game.clickcomputer.cost) {
+        clearInterval(interval);
+        interval = null;
+        intervaltime = 0;
+        interval = setInterval(() => {
+            intervaltime = intervaltime + 1;
+            if (intervaltime >= 1000) {
+                intervaltime = 0;
+            }
+        }, 1);
+        Game.click -= Game.clickcomputer.cost;
+        Game.clickcomputer.amount += 1;
+        Game.clickcomputer.cost *= 1.15;
+        Game.clickcomputer.cost = Math.ceil(Game.clickcomputer.cost);
+        Game.clickpersecond += Game.clickcomputer.persecond;
+        setTimeout(() => {
+            clickcomputerproducing()
+        }, intervaltimeDelay);
+    }    
 }
 
-// Call invertColors function to invert colors on the page
-invertColors();
+for (let i = 0; i < Game.clickcomputer.amount; i++) {
+    setTimeout(() => {
+        clickcomputerproducing();
+    }, 400 * i)
+}
 
-document.getElementById('levelinfo').style.borderColor = 'white';
-document.getElementById('middleSection').style.borderColor = 'white'
-Game.button.src = 'images/click.jpg';
-Game.button.style.width = '140px';
-document.getElementById('cursorIcon').src = 'images/cursor.jpg';
-document.getElementById('autoclickerlvlicon').src = 'images/autoclickerlvldark.jpg';
-document.getElementById('clickfarmlvlicon').src = 'images/clickfarmlvldark.jpg';
-document.getElementById('autoclickericon').src = 'images/autoclickericondark.jpg';
-document.getElementById('clickfarmicon').src = 'images/clickfarmdark.jpg';
+Game.clickcomputer.html.addEventListener("click", () => {
+    buyclickcomputer();
+});
