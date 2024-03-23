@@ -43,6 +43,7 @@ body {
     user-select: none;
     font-size: 20px;
     font-family: sans-serif;
+    color: black;
     animation-name: dissepear;
     animation-duration: 3s;
     animation-play-state: running;
@@ -347,6 +348,7 @@ body {
     position: absolute;
     left: 110px;
     top: 10px;
+    color: black;
 }
 
 #cursorexp {
@@ -356,6 +358,7 @@ body {
     position: absolute;
     left: 110px;
     top: 45px;
+    color: black;
 }
 
 #clickpersecond {
@@ -365,6 +368,7 @@ body {
     top: 162px;
     left: 50%;
     transform: translateX(-50%);
+    color: black;
 }
 
 #autoclickerLvL {
@@ -386,6 +390,7 @@ body {
     position: absolute;
     left: 110px;
     top: 110px;
+    color: black;
 }
 
 #autoclickerexp {
@@ -395,6 +400,7 @@ body {
     position: absolute;
     left: 110px;
     top: 150px;
+    color: black;
 }
 
 #autoclickerProggressBar {
@@ -442,6 +448,7 @@ body {
     position: absolute;
     left: 110px;
     top: 215px;
+    color: black;
 }
 
 #clickbaitlvlicon {
@@ -449,6 +456,7 @@ body {
     position: absolute;
     left: 9px;
     top: 225px;
+    color: black;
 }
 
 #clickbaitexpdis {
@@ -458,6 +466,7 @@ body {
     position: absolute;
     left: 110px;
     top: 255px;
+    color: black;
 }
 
 #clickfarmLvL {
@@ -479,6 +488,7 @@ body {
     position: absolute;
     left: 110px;
     top: 320px;
+    color: black;
 }
 
 #clickfarmexpdis {
@@ -488,6 +498,7 @@ body {
     position: absolute;
     left: 110px;
     top: 360px;
+    color: black;
 }
 
 #clickfarmproggressbarcontainer {
@@ -504,4 +515,96 @@ body {
     width: 0%;
     background-color: black;
     transition: width 0.5s;
+}
+
+#autoclickerabout {
+    text-align: right;
+    margin: 5px;
+    display: none;
+    z-index: 1;
+    background-color: white;
+    border: black 5px solid;
+    position: absolute;
+    right: 0;
+}
+
+#autoclickerabouttitle {
+    text-align: center;
+    font-weight: 900;
+}
+
+#clickbaitabout {
+    text-align: right;
+    margin: 5px;
+    display: none;
+    z-index: 1;
+    background-color: white;
+    border: black 5px solid;
+    position: absolute;
+    right: 0;
+}
+
+#clickbaitabouttitle {
+    text-align: center;
+    font-weight: 900;
+}
+
+#clickfarmabouttitle {
+    text-align: center;
+    font-weight: 900;
+}
+
+#clickfarmabout {
+    text-align: right;
+    margin: 5px;
+    display: none;
+    z-index: 1;
+    background-color: white;
+    border: black 5px solid;
+    position: absolute;
+    right: 0;
+}
+
+#levelinfo {
+    font-size: 25px;
+    font-weight: 900;
+    font-family: sans-serif;
+    user-select: none;
+    cursor: pointer;
+    color: black;
+    position: absolute;
+    right: 0;
+    padding-left: 5px;
+    border-left: black 5px solid;
+    border-bottom: black 5px solid;
+}
+
+#levelinfo.inverted {
+    border-color: white;
+}
+
+#levelabout {
+    background-color: white;
+    border: 5px solid black;
+    height: 160px;
+    width: 160px;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+#title {
+    text-align: center;
+    margin: 2px;
+    font-family: sans-serif;
+    color: black;
+}
+
+#contextlvl {
+    text-align: center;
+    margin: 5px;
+    color: black;
 }

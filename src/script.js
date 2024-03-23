@@ -112,10 +112,13 @@ if (savedGame) {
     Game.clickRate = savedGame.clickRate;
     Game.autoclicker.cost = savedGame.autoclicker.cost;
     Game.autoclicker.amount = savedGame.autoclicker.amount;
+    Game.autoclicker.production = savedGame.autoclicker.production
     Game.clickbait.cost = savedGame.clickbait.cost;
     Game.clickbait.amount = savedGame.clickbait.amount;
+    Game.clickbait.production = savedGame.clickbait.production;
     Game.clickfarm.cost = savedGame.clickfarm.cost;
     Game.clickfarm.amount = savedGame.clickfarm.amount;
+    Game.clickfarm.production = savedGame.clickfarm.production;
     Game.cursor.exp = savedGame.cursor.exp;
     Game.cursor.expgain = savedGame.cursor.expgain;
     Game.cursor.level = savedGame.cursor.level;
@@ -133,6 +136,9 @@ if (savedGame) {
     Game.clickfarmlvl.exptotallvlup = savedGame.clickfarmlvl.exptotallvlup;
     Game.clickfarmlvl.level = savedGame.clickfarmlvl.level;
     Game.clickfarmlvl.expgain = savedGame.clickfarmlvl.expgain;
+    Game.autoclicker.persecond = savedGame.autoclicker.persecond;
+    Game.clickbait.persecond = savedGame.clickbait.persecond;
+    Game.clickfarm.persecond = savedGame.clickfarm.persecond;
 }
 
 window.save = function save() {
@@ -178,6 +184,10 @@ function displayStuff() {
     }
 
     document.title = formatNumber(Game.click) + " - Idle Click";
+
+    document.getElementById('persecondautoclicker').innerHTML = 'Per Second: ' + formatNumber(Game.autoclicker.persecond) + ' clicks';
+    document.getElementById('persecondclickbait').innerHTML = 'Per Second: ' + formatNumber(Game.clickbait.persecond) + ' clicks';
+    document.getElementById('persecondclickfarm').innerHTML = 'Per Second: ' + formatNumber(Game.clickfarm.persecond) + ' clicks';
 
     Game.autoclicker.costhtml.innerHTML = formatNumber(Game.autoclicker.cost) + ' clicks';
     Game.autoclicker.amounthtml.innerHTML = Game.autoclicker.amount;
@@ -387,14 +397,18 @@ Game.button.addEventListener("click", () => {
     }
 })
 
+let cursorwidth = 200;
+
 Game.button.addEventListener("mouseover", () => {
+    cursorwidth += 10;
     Game.button.style.height = '210px';
-    Game.button.style.width = '210px';
+    Game.button.style.width = cursorwidth + 'px';
 })
 
 Game.button.addEventListener("mouseout", () => {
+    cursorwidth -= 10;
     Game.button.style.height = '200px';
-    Game.button.style.width = '200px';
+    Game.button.style.width = cursorwidth + 'px';
 })
 
 function autoclickerLVLup() {
@@ -441,3 +455,100 @@ function clickfarmLVLup() {
         Game.clickpersecond = Game.clickfarm.amount * Game.clickfarm.persecond;
     }
 }
+
+Game.autoclicker.html.addEventListener('mousemove', function(event) {
+    let mouseY = event.pageY;
+    document.getElementById('autoclickerabout').style.top = mouseY + 'px';
+    document.getElementById('autoclickerabout').style.display = 'block';
+})
+
+Game.autoclicker.html.addEventListener('mouseleave', function() {
+    document.getElementById('autoclickerabout').style.display = 'none'
+})
+
+Game.clickbait.html.addEventListener('mousemove', function(event) {
+    let mouseY = event.pageY;
+    document.getElementById('clickbaitabout').style.top = mouseY + 'px';
+    document.getElementById('clickbaitabout').style.display = 'block';
+})
+
+Game.clickbait.html.addEventListener('mouseleave', function() {
+    document.getElementById('clickbaitabout').style.display = 'none';
+})
+
+Game.clickfarm.html.addEventListener('mousemove', function(event) {
+    let mouseY = event.pageY;
+    document.getElementById('clickfarmabout').style.top = mouseY + 'px';
+    document.getElementById('clickfarmabout').style.display = 'block';
+})
+
+Game.clickfarm.html.addEventListener('mouseleave', function() {
+    document.getElementById('clickfarmabout').style.display = 'none'
+})
+
+document.getElementById('levelinfo').addEventListener('click', () => {
+    let levelaboutElement = document.getElementById('levelabout');
+
+    if (levelaboutElement.style.display === 'block') {
+    levelaboutElement.style.display = 'none';
+    } else {
+    levelaboutElement.style.display = 'block';
+    }
+})
+
+function invertColors() {
+    var allElements = document.querySelectorAll('*');
+
+    for (var i = 0; i < allElements.length; i++) {
+        var element = allElements[i];
+        var bgColor = getComputedStyle(element).backgroundColor;
+        var color = getComputedStyle(element).color;
+
+        // Invert background color
+        if (bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent') {
+            element.style.backgroundColor = invertColor(bgColor);
+        }
+
+        // Invert text color
+        element.style.color = invertColor(color);
+
+        // Invert border color
+        var borderColor = getComputedStyle(element).borderColor;
+        if (borderColor !== 'rgba(0, 0, 0, 0)' && borderColor !== 'transparent') {
+            element.style.borderColor = invertColor(borderColor);
+        }
+    }
+}
+
+function invertColor(color) {
+    // Remove spaces from start and end of color string
+    color = color.trim();
+
+    // Check if the color is in hex format
+    if (color.match(/^#[0-9A-Fa-f]{6}$/)) {
+        // Invert hex color
+        color = (Number(`0x${color.slice(1)}`) ^ 0xFFFFFF).toString(16);
+        color = '#' + ('000000' + color).slice(-6);
+    } else if (color.startsWith('rgb')) {
+        // Invert rgb/rgba color
+        var parts = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
+        if (parts) {
+            color = 'rgb(' + (255 - parseInt(parts[1], 10)) + ',' + (255 - parseInt(parts[2], 10)) + ',' + (255 - parseInt(parts[3], 10)) + ')';
+        }
+    }
+
+    return color;
+}
+
+// Call invertColors function to invert colors on the page
+invertColors();
+
+document.getElementById('levelinfo').style.borderColor = 'white';
+document.getElementById('middleSection').style.borderColor = 'white'
+Game.button.src = 'images/click.jpg';
+Game.button.style.width = '140px';
+document.getElementById('cursorIcon').src = 'images/cursor.jpg';
+document.getElementById('autoclickerlvlicon').src = 'images/autoclickerlvldark.jpg';
+document.getElementById('clickfarmlvlicon').src = 'images/clickfarmlvldark.jpg';
+document.getElementById('autoclickericon').src = 'images/autoclickericondark.jpg';
+document.getElementById('clickfarmicon').src = 'images/clickfarmdark.jpg';
