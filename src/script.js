@@ -79,7 +79,7 @@ let Game = {
     autoclicker: {
         cost: 100,
         amount: 0,
-        production: 1, //The autoclicker is gonna produce one click per second
+        production: 1,
         persecond: 1,
         html: document.getElementById('autoclicker'),
         costhtml: document.getElementById('autoclickercost'),
@@ -89,7 +89,7 @@ let Game = {
     clickbait: {
         cost: 1010,
         amount: 0,
-        production: 1, //The clickbaiter is gonna produce five clicks per second
+        production: 1,
         persecond: 10,
         html: document.getElementById('clickbait'),
         amounthtml: document.getElementById('clickbaitamount'),
@@ -99,7 +99,7 @@ let Game = {
     clickfarm: {
         cost: 11010,
         amount: 0,
-        production: 1, //The clickfarm is gonna produce 25 clicks per second
+        production: 1,
         persecond: 100,
         html: document.getElementById('clickfarm'),
         amounthtml: document.getElementById('clickfarmamount'),
@@ -109,13 +109,37 @@ let Game = {
     clickcomputer: {
         cost: 101101,
         amount: 0,
-        production: 10, //The computer is gonna produce 1000 clicks per second
+        production: 10,
         persecond: 1000,
         html: document.getElementById('clickcomputer'),
         amounthtml: document.getElementById('clickcomputeramount'),
         costhtml: document.getElementById('clickcomputercost'),
     }
 };
+
+class Acheivment {
+    constructor(name, description, requirement, reward) {
+        this.name = name;
+        this.description = description;
+        this.requirement = requirement;
+        this.reward = reward;
+        this.unlocked = false;
+    }
+
+    checkUnlock(requirementMet) {
+        if (!this.unlocked && requirementMet) {
+            this.unlocked = true;
+            // Notify player
+            if (this.reward) {
+                // Reward
+            }
+        }
+    }
+}
+
+let productionProperties = Object.keys(Game).filter(key => 
+    key.endsWith('lvl') || key.endsWith('click') || key.endsWith('farm') || key.endsWith('computer')
+);
 
 setInterval(() => {
     save();
@@ -293,51 +317,36 @@ Game.button.addEventListener("click", () => {
     popupClickRate();
 })
 
-let autoclickerIntervals = [];
+let autoclickerinterval;
 
-function autoclickerproducing(autoclickerIndex) {
-    clearInterval(autoclickerIntervals[autoclickerIndex]);
-    autoclickerIntervals[autoclickerIndex] = setInterval(() => {
-        Game.click += Game.autoclicker.production;
-        Game.autoclickerlvl.exp += Game.autoclickerlvl.expgain;
-        displayStuff();
-    }, 1000);
-}
-
-function autoclickerloop() {
-    for (let i = 0; i < Game.autoclicker.amount; i++) {
-        setTimeout(() => {
-            autoclickerproducing(i);
-        }, 400 * i);
+function autoclickerproducing() {
+    let interval = 1000 / Game.autoclicker.amount;
+    if (interval <= 1) {
+        setInterval(() => {
+            Game.click += Game.autoclicker.amount;
+            Game.autoclickerlvl.exp += Game.autoclickerlvl.expgain;
+            autoclickerLVLup();
+        }, interval);
+    } else if (Game.autoclicker.amount >= 1) {
+        clearInterval(autoclickerinterval)
+        autoclickerinterval = setInterval(() => {
+            Game.click += Game.autoclicker.production;
+            Game.autoclickerlvl.exp += Game.autoclickerlvl.expgain;
+            autoclickerLVLup();
+        }, interval);
     }
 }
 
-autoclickerloop();
-
-let interval;
-let intervaltime = 0;
-const intervaltimeDelay = 1000 - intervaltime;
+autoclickerproducing();
 
 function buyautoclicker() {
     if (Game.click >= Game.autoclicker.cost) {
-        clearInterval(interval);
-        interval = null;
-        intervaltime = 0;
-        intervaltime = 0;
-        interval = setInterval(() => {
-            intervaltime = intervaltime + 1;
-            if (intervaltime >= 1000) {
-                intervaltime = 0;
-            }
-        }, 1);
         Game.click -= Game.autoclicker.cost;
         Game.autoclicker.amount += 1;
         Game.autoclicker.cost *= 1.15;
         Game.autoclicker.cost = Math.ceil(Game.autoclicker.cost);
         Game.clickpersecond += Game.autoclicker.persecond;
-        setTimeout(() => {
-            autoclickerloop();
-        }, intervaltimeDelay)
+        autoclickerproducing();
     }
 }
 
@@ -346,76 +355,69 @@ Game.autoclicker.html.addEventListener("click", () => {
     buyautoclicker();
 });
 
-let clickbaitIntervals = [];
+let clickbaitinterval;
 
-function clickbaitproducing(clickbaitIndex) {
-    clickbaitIntervals[clickbaitIndex] = setInterval(() => {
-        Game.click += Game.clickbait.production;
-        Game.clickbaitlvl.exp += Game.clickbaitlvl.expgain;
-        displayStuff();
-    }, 100)
+function clickbaitproducing() {
+    let interval = 1000 / Game.clickbait.persecond / Game.clickbait.amount;
+    if (interval <= 1) {
+        setInterval(() => {
+            Game.click += Game.clickbait.production;
+            Game.clickbaitlvl.exp += Game.clickbaitlvl.expgain;
+        }, interval)
+    } else if (Game.clickbait.amount >= 1) {
+        clearInterval(clickbaitinterval);
+        clickbaitinterval = setInterval(() => {
+            Game.click += Game.clickbait.production;
+            Game.clickbaitlvl.exp += Game.clickbaitlvl.expgain;
+        }, interval);
+    }
 }
+
+clickbaitproducing();
 
 function buyclickbait() {
     if (Game.click >= Game.clickbait.cost) {
-        clearInterval(interval);
-        interval = null;
-        intervaltime = 0;
-        interval = setInterval(() => {
-        intervaltime = intervaltime + 1;
-        if (intervaltime >= 1000) {
-        intervaltime = 0;
-        }
-        }, 1);
         Game.click -= Game.clickbait.cost;
         Game.clickbait.amount += 1;
         Game.clickbait.cost *= 1.15;
         Game.clickbait.cost = Math.ceil(Game.clickbait.cost);
         Game.clickpersecond += Game.clickbait.persecond;
-        setTimeout(() => {
-            clickbaitproducing()
-        }, intervaltimeDelay);
-    }
-}
-
-for (let i = 0; i < Game.clickbait.amount; i++) {
-    setTimeout(() => {
         clickbaitproducing();
-    }, 400 * i)
+    }
 }
 
 Game.clickbait.html.addEventListener("click", () => {
     buyclickbait();
 });
 
-let clickfarmIntervals = [];
+let clickfarminterval;
 
-function clickfarmproducing(clickfarmIndex) {
-    clickfarmIntervals[clickfarmIndex] = setInterval(() => {
-        Game.click += Game.clickfarm.production;
-        Game.clickfarmlvl.exp += Game.clickfarmlvl.expgain;
-    }, 10)
+function clickfarmproducing() {
+    let interval = 1000 / Game.clickfarm.persecond / Game.clickfarm.amount;
+    if (interval <= 1) {
+        setInterval(() => {
+            Game.click += Game.clickfarm.production;
+            Game.clickfarmlvl.exp += Game.clickfarmlvl.expgain;
+        }, interval)
+    } else if (Game.clickfarm.amount >= 1) {
+        clearInterval(clickfarminterval);
+        clickfarminterval = setInterval(() => {
+            Game.click += Game.clickfarm.production;
+            Game.clickfarmlvl.exp += Game.clickfarmlvl.expgain;
+        }, interval);
+    }
 }
+
+clickfarmproducing();
 
 function buyclickfarm() {
     if (Game.click >= Game.clickfarm.cost) {
-        clearInterval(interval);
-        interval = null;
-        intervaltime = 0;
-        interval = setInterval(() => {
-        intervaltime = intervaltime + 1;
-        if (intervaltime >= 1000) {
-        intervaltime = 0;
-        }
-        }, 1);
         Game.click -= Game.clickfarm.cost;
         Game.clickfarm.amount += 1;
         Game.clickfarm.cost *= 1.15;
         Game.clickfarm.cost = Math.ceil(Game.clickfarm.cost);
         Game.clickpersecond += Game.clickfarm.persecond;
-        setTimeout(() => {
-            clickfarmproducing();
-        }, intervaltimeDelay)
+        clickfarmproducing();
     }
 }
 
@@ -573,48 +575,41 @@ document.getElementById('levelinfo').addEventListener('click', () => {
     let levelaboutElement = document.getElementById('levelabout');
 
     if (levelaboutElement.style.display === 'block') {
-    levelaboutElement.style.display = 'none';
+        levelaboutElement.style.display = 'none';
     } else {
-    levelaboutElement.style.display = 'block';
+        levelaboutElement.style.display = 'block';
     }
 })
 
-let clickcomputerIntervals = [];
+let clickcomputerinterval;
 
-function clickcomputerproducing(clickcomputerIndex) {
-    clickcomputerIntervals[clickcomputerIndex] = setInterval(() => {
-        Game.click += Game.clickcomputer.production;
-        Game.computerlvl.exp += Game.computerlvl.expgain
-    }, 1)
+function clickcomputerproducing() {
+    let interval = 1000 / Game.clickcomputer.persecond / Game.clickcomputer.amount;
+    if (interval <= 1) {
+        setInterval(() => {
+            Game.click += Game.clickcomputer.production;
+            Game.computerlvl.exp += Game.computerlvl.expgain;
+        }, interval)
+    } else if (Game.clickcomputer.amount >= 1) {
+        clearInterval(clickcomputerinterval);
+        clickcomputerinterval = setInterval(() => {
+            Game.click += Game.clickcomputer.production;
+            Game.computerlvl.exp += Game.computerlvl.expgain;
+        }, interval);
+    }
 }
 
+clickcomputerproducing();
 
 function buyclickcomputer() {
     if (Game.click >= Game.clickcomputer.cost) {
-        clearInterval(interval);
-        interval = null;
-        intervaltime = 0;
-        interval = setInterval(() => {
-            intervaltime = intervaltime + 1;
-            if (intervaltime >= 1000) {
-                intervaltime = 0;
-            }
-        }, 1);
         Game.click -= Game.clickcomputer.cost;
         Game.clickcomputer.amount += 1;
         Game.clickcomputer.cost *= 1.15;
         Game.clickcomputer.cost = Math.ceil(Game.clickcomputer.cost);
         Game.clickpersecond += Game.clickcomputer.persecond;
-        setTimeout(() => {
-            clickcomputerproducing()
-        }, intervaltimeDelay);
-    }    
-}
-
-for (let i = 0; i < Game.clickcomputer.amount; i++) {
-    setTimeout(() => {
         clickcomputerproducing();
-    }, 400 * i)
+    }    
 }
 
 Game.clickcomputer.html.addEventListener("click", () => {
